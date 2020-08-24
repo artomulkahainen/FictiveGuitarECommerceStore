@@ -12,15 +12,18 @@ describe('GET METHODS', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/);
   });
-  test('a specific guitar is found', async () => {
+  test('ukulele is found', async () => {
     const res = await api.get('/api/guitars/');
     const guitars = res.body.map((r) => r.title);
 
     expect(guitars).toContain('Ukulele');
   });
-  /*test('specific item can be viewed', async () => {
-      const 
-  });*/
+  test('Les Paul is found', async () => {
+    const res = await api.get('/api/guitars/');
+    const guitars = res.body.map((r) => r.title);
+
+    expect(guitars).toContain('Les Paul');
+  });
 });
 
 afterAll(() => {

@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const config = require('./utils/config');
 const cors = require('cors');
 const guitarsRouter = require('./controllers/guitars');
+const usersRouter = require('./controllers/users');
 const logger = require('./utils/logger');
 const middleware = require('./utils/middleware');
 
@@ -21,6 +22,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/guitars', guitarsRouter);
+app.use('/api/users', usersRouter);
 app.use(middleware.errorHandler);
 app.use(middleware.unknownEndpoint);
 
