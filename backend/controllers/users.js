@@ -10,7 +10,7 @@ usersRouter.get('/', async (req, res) => {
 
 usersRouter.get('/:id', async (req, res) => {
   const user = await User.findById(req.params.id);
-  user ? res.json((u = u.toJSON())) : res.status(404).end();
+  user ? res.json(user.toJSON()) : res.status(404).end();
 });
 
 // POST -METHOD
@@ -22,12 +22,36 @@ usersRouter.post('/', async (req, res) => {
   const newUser = new User({
     username: body.username,
     passwordHash,
+    email: body.email,
     details: body.details,
     orders: [],
   });
 
   const savedUser = await newUser.save();
   res.json(savedUser);
+});
+
+// DELETE -METHOD
+usersRouter.delete('/:id', async (req, res, next) => {
+  await User.findByIdAndRemove(req.params.id)
+    .then((deletedUser) => res.json(deletedUser))
+    .catch((error) => next(error));
+});
+
+// PUT -METHOD
+usersRouter.put('/:id', async (req, res, next) => {
+  const body = req.body;
+  const updatedObject = { ...body.details };
+
+  await User.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: { details: updatedObject },
+    },
+    { new: true }
+  )
+    .then((updatedUser) => res.json(updatedUser))
+    .catch((error) => next(error));
 });
 
 module.exports = usersRouter;
