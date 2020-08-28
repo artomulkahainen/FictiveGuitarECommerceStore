@@ -1,0 +1,5 @@
+@media (max-width: 500px) {
+  .Home h1 {
+    font-size: 100%;
+  }
+}

@@ -1,0 +1,4 @@
+.Guitars {
+  display: flex;
+  flex-wrap: wrap;
+}

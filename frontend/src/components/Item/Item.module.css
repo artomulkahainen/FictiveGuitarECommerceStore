@@ -1,0 +1,53 @@
+.Item {
+  display: flex;
+  width: 350px;
+  height: 350px;
+  margin: 10px auto 10px auto;
+  box-shadow: 10px 4px 10px 3px #a8a8a8;
+}
+
+.Item img {
+  width: 40%;
+  height: 60%;
+  margin: 10px auto 0 auto;
+  border-radius: 8px;
+}
+
+.Item h2 {
+  font-size: 25px;
+  margin: 10px auto 10px auto;
+}
+
+.Item p {
+  font-size: 15px;
+  margin: 0 auto 0 auto;
+}
+
+@media (max-width: 1000px) {
+  .Item {
+    width: 45%;
+    height: 45%;
+  }
+
+  .Item h2 {
+    font-size: 100%;
+    margin: 2px auto 2px auto;
+  }
+
+  .Item img {
+    width: 30%;
+    height: 50%;
+  }
+
+  .Item p {
+    font-size: 50%;
+    margin: auto;
+  }
+
+  .Item button {
+    width: 30%;
+    height: 30%;
+    font-size: 20%;
+    text-align: center;
+  }
+}
