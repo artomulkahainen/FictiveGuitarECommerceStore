@@ -7,10 +7,12 @@ import Account from '../containers/Account/Account';
 import Cart from '../containers/Cart/Cart';
 import Checkout from '../containers/Checkout/Checkout';
 
-const Routes = ({ user, setUser }) => {
+const Routes = ({ user, setUser, guitarData }) => {
   return (
     <Switch>
-      <Route path='/guitars/' component={Guitars} />
+      <Route path='/guitars/'>
+        <Guitars guitarData={guitarData} />
+      </Route>
       <Route path='/cart' component={Cart} />
       <Route path='/login' component={Login} />
       <Route path='/account'>
@@ -22,9 +24,7 @@ const Routes = ({ user, setUser }) => {
       <Route path='/logout'>
         {user ? setUser(null) && <Redirect to='/' /> : <Redirect to='/' />}
       </Route>
-      <Route path='/'>
-        <Home />
-      </Route>
+      <Route path='/' component={Home} />
     </Switch>
   );
 };

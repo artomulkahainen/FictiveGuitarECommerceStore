@@ -1,0 +1,9 @@
+.Button {
+  margin-top: 10px;
+}
+
+@media (max-height: 600px) {
+  .Button {
+    margin-top: 5px;
+  }
+}

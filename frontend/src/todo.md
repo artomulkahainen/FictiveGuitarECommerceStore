@@ -1,0 +1,4 @@
+- add redux
+- fix buttons on small screens
+- add account page
+- add create account page

@@ -1,9 +1,14 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
+import classes from './Button.module.css';
 
-const button = ({ text, variant, click, style }) => {
+const button = ({ text, variant, click, style, type }) => {
   return (
-    <Button style={{ textAlign: 'center' }} variant={variant} onClick={click}>
+    <Button
+      className={classes.Button}
+      variant={variant}
+      onClick={click}
+      type={type}>
       {text}
     </Button>
   );

@@ -4,7 +4,7 @@ import { Card } from 'react-bootstrap';
 //import { Button } from 'react-bootstrap';
 import Button from '../Button/Button';
 
-const Item = ({ item, img, price }) => {
+const Item = ({ item, img, price, click }) => {
   return (
     <div className={styles.Item}>
       <Card>
@@ -16,7 +16,7 @@ const Item = ({ item, img, price }) => {
             display: 'flex',
             justifyContent: 'center',
           }}>
-          <Button variant='dark' text='Add to cart' />
+          <Button variant='dark' text='Add to cart' click={click} />
         </div>
       </Card>
     </div>

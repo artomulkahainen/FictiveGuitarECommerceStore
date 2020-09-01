@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
-import img from '../../assets/img/ac2.jpg';
+import img from '../../assets/img/acousticguitar.jpg';
 import NavLink from './NavLink/NavLink';
 
 const NavBar = () => {
