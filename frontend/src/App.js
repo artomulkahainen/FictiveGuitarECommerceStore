@@ -1,30 +1,34 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import NavBar from './components/Navigation/NavBar';
 import Routes from './routes/Routes';
-import guitarService from './services/guitarService';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { initGuitars } from './store/reducers/guitarReducer';
+import { checkUser } from './store/reducers/userLoggedReducer';
 
 const App = () => {
-  const [user, setUser] = useState(null);
-  const [guitarData, setGuitarData] = useState(null);
+  const dispatch = useDispatch();
 
-  // USE EFFECTS
+  // CHECK IF USER ALREADY LOGGED IN
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser');
+    /*console.log('current loggerUserJSON: ');
+    console.log(loggedUserJSON);*/
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
-      setUser(user);
+      dispatch(checkUser(user));
     }
-  }, []);
+  }, [dispatch]);
 
+  // GET GUITARS DATA FROM BACKEND
   useEffect(() => {
-    guitarService.getAll().then((guitars) => setGuitarData(guitars));
-  });
+    dispatch(initGuitars());
+  }, [dispatch]);
 
   return (
     <div className='container'>
       <NavBar />
-      <Routes user={user} setUser={setUser} guitarData={guitarData} />
+      <Routes />
     </div>
   );
 };

@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const usersRouter = require('express').Router();
 const User = require('../models/user');
+const tokenValidator = require('../utils/tokenValidator');
+const jwt = require('jsonwebtoken');
 
 // GET -METHODS
 usersRouter.get('/', async (req, res) => {
@@ -32,19 +34,31 @@ usersRouter.post('/', async (req, res) => {
 });
 
 // DELETE -METHOD
-usersRouter.delete('/:id', async (req, res, next) => {
-  await User.findByIdAndRemove(req.params.id)
+usersRouter.delete('/', async (req, res, next) => {
+  const id = tokenValidator(req);
+
+  if (!id) {
+    return res.status(401).json({ error: 'token missing or invalid' });
+  }
+
+  await User.findByIdAndRemove(id)
     .then((deletedUser) => res.json(deletedUser))
     .catch((error) => next(error));
 });
 
 // PUT -METHOD
-usersRouter.put('/:id', async (req, res, next) => {
+usersRouter.put('/', async (req, res, next) => {
+  const id = tokenValidator(req);
+
+  if (!id) {
+    return res.status(401).json({ error: 'token missing or invalid' });
+  }
+
   const body = req.body;
   const updatedObject = { ...body.details };
 
   await User.findByIdAndUpdate(
-    req.params.id,
+    id,
     {
       $set: { details: updatedObject },
     },

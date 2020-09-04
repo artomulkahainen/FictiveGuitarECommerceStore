@@ -1,20 +1,32 @@
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import Guitars from '../containers/Guitars/Guitars';
 import Home from '../components/Home/Home';
 import Login from '../components/Login/Login';
+import { checkUser } from '../store/reducers/userLoggedReducer';
+import userService from '../services/userService';
 import Account from '../containers/Account/Account';
 import Cart from '../containers/Cart/Cart';
 import Checkout from '../containers/Checkout/Checkout';
 
-const Routes = ({ user, setUser, guitarData }) => {
+const Routes = () => {
+  const user = useSelector(({ userLogged }) => userLogged);
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  const logout = () => {
+    window.localStorage.clear();
+    userService.setToken(null);
+    dispatch(checkUser(null));
+    history.push('/');
+  };
+
   return (
     <Switch>
-      <Route path='/guitars/'>
-        <Guitars guitarData={guitarData} />
-      </Route>
+      <Route path='/guitars/' component={Guitars} />
       <Route path='/cart' component={Cart} />
-      <Route path='/login' component={Login} />
+      <Route path='/login'>{user ? <Redirect to='/' /> : <Login />}</Route>
       <Route path='/account'>
         {user ? <Account /> : <Redirect to='/login' />}
       </Route>
@@ -22,7 +34,14 @@ const Routes = ({ user, setUser, guitarData }) => {
         {user ? <Checkout /> : <Redirect to='/login' />}
       </Route>
       <Route path='/logout'>
-        {user ? setUser(null) && <Redirect to='/' /> : <Redirect to='/' />}
+        {user ? (
+          () => {
+            logout();
+            return;
+          }
+        ) : (
+          <Redirect to='/' />
+        )}
       </Route>
       <Route path='/' component={Home} />
     </Switch>

@@ -1,7 +1,7 @@
 let token = null;
 
 const setToken = (newToken) => {
-  token = `bearer ${newToken}`;
+  newToken ? (token = `bearer ${newToken}`) : (token = null);
 };
 
 export default { setToken, token };

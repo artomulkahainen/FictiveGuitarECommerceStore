@@ -2,6 +2,7 @@ const ordersRouter = require('express').Router();
 const Order = require('../models/orders');
 const User = require('../models/user');
 const Guitar = require('../models/guitar');
+const tokenValidator = require('../utils/tokenValidator');
 
 // GET -METHODS
 ordersRouter.get('/', async (req, res) => {
@@ -16,44 +17,30 @@ ordersRouter.get('/:id', async (req, res) => {
 
 // POST -METHODS
 ordersRouter.post('/', async (req, res) => {
+  const id = tokenValidator(req);
+
+  if (!id) {
+    return res.status(401).json({ error: 'authorization failed' });
+  }
+
   const body = req.body;
-  const user = await User.findById(req.body.userId);
+  const user = await User.findById(id);
   const guitars = await Guitar.find({});
 
-  // TÄÄ TAPA TOIMII, MUTTA EI ERITTELE USEAMPIA SAMOJA TUOTTEITA
-  const filteredItems = guitars.filter((g) => body.products.includes(g.id));
+  const filteredItems = body.products.map((p) => {
+    const guitarToFind = guitars.find((g) => g.id === p.product);
 
-  console.log(`Body products length: ${body.products.length}`);
+    const newObject = {
+      product: guitarToFind,
+      quantity: p.quantity,
+    };
 
-  // YRITYS2
-  /*const filteredItems = [];
-
-  body.products.forEach(function (p) {
-    for (var i = 0; i < guitars.length; i++) {
-      if (body.products.includes(guitars[i].id)) {
-        filteredItems.push(guitars[i].id);
-        break;
-      }
-    }
-  });*/
-
-  /*for (var i = 0; i < body.products.length; i++) {
-    guitars.forEach((g) =>
-      body.products.includes(g.id) ? filteredItems.push(g) : null
-    );
-  }*/
-
-  // YRITYS 3
-  /*const filteredItems = [];
-
-  body.products.forEach((el) => {
-    let specific = guitars.forEach((g) => g.id === el.id);
-    console.log(`Specific guitar is found: ${specific}`);
-    filteredItems.push(specific);
-  });*/
+    return newObject;
+  });
 
   const newOrder = new Order({
     products: filteredItems,
+    totalPrice: body.totalPrice,
     user: user,
   });
 
