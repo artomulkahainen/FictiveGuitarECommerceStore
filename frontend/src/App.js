@@ -5,18 +5,20 @@ import Routes from './routes/Routes';
 import { useEffect } from 'react';
 import { initGuitars } from './store/reducers/guitarReducer';
 import { checkUser } from './store/reducers/userLoggedReducer';
+import userService from './services/userService';
+import { getUserDetails } from './store/reducers/userDetailsReducer';
 
 const App = () => {
   const dispatch = useDispatch();
 
-  // CHECK IF USER ALREADY LOGGED IN
+  // CHECK IF USER ALREADY LOGGED IN. IF USER IS LOGGED, DISPATCH USER AND USER DETAILS
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser');
-    /*console.log('current loggerUserJSON: ');
-    console.log(loggedUserJSON);*/
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
+      userService.setToken(user.token);
       dispatch(checkUser(user));
+      dispatch(getUserDetails());
     }
   }, [dispatch]);
 

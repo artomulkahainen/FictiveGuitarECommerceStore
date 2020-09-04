@@ -37,7 +37,7 @@ const Routes = () => {
         {user ? (
           () => {
             logout();
-            return;
+            return null;
           }
         ) : (
           <Redirect to='/' />
