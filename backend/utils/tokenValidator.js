@@ -10,9 +10,15 @@ const getTokenFrom = (request) => {
 
 const validate = (req) => {
   const token = getTokenFrom(req);
-  const decodedToken = jwt.verify(token, process.env.SECRET);
+  let decodedToken = null;
 
-  if (!token || !decodedToken.id) {
+  try {
+    decodedToken = jwt.verify(token, process.env.SECRET);
+  } catch (error) {
+    console.log(error);
+  }
+
+  if (!token || !decodedToken) {
     return null;
   }
 

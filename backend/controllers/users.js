@@ -2,12 +2,12 @@ const bcrypt = require('bcrypt');
 const usersRouter = require('express').Router();
 const User = require('../models/user');
 const tokenValidator = require('../utils/tokenValidator');
-const jwt = require('jsonwebtoken');
+const { body, validationResult } = require('express-validator');
 
 // GET -METHODS
 usersRouter.get('/', async (req, res) => {
   const users = await User.find({});
-  res.json(users.map((u) => u.toJSON()));
+  users ? res.json(users.map((u) => u.toJSON())) : res.status(404).end();
 });
 
 usersRouter.get('/:id', async (req, res) => {
@@ -16,22 +16,45 @@ usersRouter.get('/:id', async (req, res) => {
 });
 
 // POST -METHOD
-usersRouter.post('/', async (req, res) => {
-  const body = req.body;
-  const saltRounds = 10;
-  const passwordHash = await bcrypt.hash(body.password, saltRounds);
 
-  const newUser = new User({
-    username: body.username,
-    passwordHash,
-    email: body.email,
-    details: body.details,
-    orders: [],
-  });
+usersRouter.post(
+  '/',
+  [
+    body('username')
+      .isString()
+      .withMessage('username must be in string format')
+      .not()
+      .isEmpty()
+      .withMessage("username can't be empty")
+      .trim()
+      .escape(),
+    body('password', 'password min length is 5').isLength({ min: 5 }),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
 
-  const savedUser = await newUser.save();
-  res.json(savedUser);
-});
+    const saltRounds = 10;
+    const passwordHash = await bcrypt.hash(req.body.password, saltRounds);
+
+    const newUser = new User({
+      username: req.body.username,
+      passwordHash,
+      email: req.body.email,
+      details: req.body.details,
+      orders: [],
+    });
+
+    try {
+      const savedUser = await newUser.save();
+      res.json(savedUser);
+    } catch (error) {
+      res.status(400).json({ error: error.errors });
+    }
+  }
+);
 
 // DELETE -METHOD
 usersRouter.delete('/', async (req, res, next) => {
