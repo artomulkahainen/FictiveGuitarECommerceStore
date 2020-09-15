@@ -37,7 +37,8 @@ ordersRouter.post(
     }
 
     const user = await User.findById(id);
-    const guitars = await Guitar.find({});
+    const guitarIds = req.body.products.map((p) => p.product);
+    const guitars = await Guitar.find({ _id: { $in: guitarIds } });
 
     const filteredItems = req.body.products.map((p) => {
       const guitarToFind = guitars.find((g) => g.id === p.product);
