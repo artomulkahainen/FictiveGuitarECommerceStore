@@ -7,11 +7,13 @@ import LoginForm from './LoginForm/LoginForm';
 import loginService from '../../services/loginService';
 import userService from '../../services/userService';
 import { loginUser } from '../../store/reducers/userLoggedReducer';
+import { getUserDetails } from '../../store/reducers/userDetailsReducer';
+import Button from '../Button/Button';
 
 const Login = () => {
   const dispatch = useDispatch();
-  const username = useField('text');
-  const password = useField('password');
+  const username = useField('text', '');
+  const password = useField('password', '');
   const history = useHistory();
 
   const onSubmit = async (event) => {
@@ -30,6 +32,9 @@ const Login = () => {
       // DISPATCH USER LOGIN
       dispatch(loginUser(user));
 
+      // DISPATCH USER DETAILS
+      dispatch(getUserDetails());
+
       // CLEAR FIELDS
       username.value = '';
       password.value = '';
@@ -45,10 +50,17 @@ const Login = () => {
       className={classes.Login}
       style={{
         display: 'flex',
-        justifyContent: 'center',
+        flexDirection: 'column',
+        alignItems: 'center',
+        /*justifyContent: 'center',*/
         height: '1000px',
       }}>
       <LoginForm onSubmit={onSubmit} username={username} password={password} />
+      <br />
+      <Button
+        text='Create account'
+        click={() => history.push('/createaccount')}
+      />
     </div>
   );
 };

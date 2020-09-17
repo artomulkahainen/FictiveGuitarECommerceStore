@@ -77,13 +77,14 @@ usersRouter.put('/', async (req, res, next) => {
     return res.status(401).json({ error: 'token missing or invalid' });
   }
 
-  const body = req.body;
-  const updatedObject = { ...body.details };
-
   await User.findByIdAndUpdate(
     id,
     {
-      $set: { details: updatedObject },
+      $set: {
+        username: req.body.username,
+        email: req.body.email,
+        details: req.body.details,
+      },
     },
     { new: true }
   )
