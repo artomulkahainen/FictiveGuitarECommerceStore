@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Col } from 'react-bootstrap';
+import { Form, Col, Spinner } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Button from '../../../components/Button/Button';
@@ -11,7 +11,7 @@ const DetailsForm = ({ data }) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const username = useField('text', data.username);
+  //const username = useField('text', data.username);
   const email = useField('email', data.email);
   const fullName = useField('text', data.details.name);
   const address = useField('text', data.details.address);
@@ -22,7 +22,7 @@ const DetailsForm = ({ data }) => {
   const formSendHandler = async (event) => {
     event.preventDefault();
     const newObject = {
-      username: username.value,
+      //username: username.value,
       email: email.value,
       details: {
         name: fullName.value,
@@ -45,80 +45,86 @@ const DetailsForm = ({ data }) => {
 
   return (
     <div>
-      <Form onSubmit={formSendHandler}>
-        <Form.Row>
-          <Form.Group as={Col} controlId='formGridUsername'>
-            <Form.Label>Username</Form.Label>
-            <Form.Control
-              type='text'
-              onChange={username.onChange}
-              value={username.value}
-            />
-          </Form.Group>
-        </Form.Row>
+      {data ? (
+        <div>
+          <Form onSubmit={formSendHandler}>
+            {/*<Form.Row>
+              <Form.Group as={Col} controlId='formGridUsername'>
+                <Form.Label>Username</Form.Label>
+                <Form.Control
+                  type='text'
+                  onChange={username.onChange}
+                  value={username.value}
+                />
+              </Form.Group>
+            </Form.Row>*/}
 
-        <Form.Group controlId='formGridEmail'>
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type='email'
-            onChange={email.onChange}
-            value={email.value}
+            <Form.Group controlId='formGridEmail'>
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type='email'
+                onChange={email.onChange}
+                value={email.value}
+              />
+            </Form.Group>
+
+            <Form.Group controlId='formGridName'>
+              <Form.Label>Full name</Form.Label>
+              <Form.Control
+                type='text'
+                onChange={fullName.onChange}
+                value={fullName.value}
+              />
+            </Form.Group>
+
+            <Form.Group controlId='formGridAddress1'>
+              <Form.Label>Address</Form.Label>
+              <Form.Control
+                type='text'
+                onChange={address.onChange}
+                value={address.value}
+              />
+            </Form.Group>
+
+            <Form.Row>
+              <Form.Group as={Col} controlId='formGridCity'>
+                <Form.Label>City</Form.Label>
+                <Form.Control
+                  type='text'
+                  onChange={city.onChange}
+                  value={city.value}
+                />
+              </Form.Group>
+
+              <Form.Group as={Col} controlId='formGridZip'>
+                <Form.Label>Zipcode</Form.Label>
+                <Form.Control
+                  type='text'
+                  onChange={zipCode.onChange}
+                  value={zipCode.value}
+                />
+              </Form.Group>
+            </Form.Row>
+            <Form.Group controlId='formGridName'>
+              <Form.Label>Phone number</Form.Label>
+              <Form.Control
+                type='text'
+                onChange={phoneNumber.onChange}
+                value={phoneNumber.value}
+              />
+            </Form.Group>
+
+            <Button variant='primary' type='submit' text='Update' />
+          </Form>
+          <Button
+            variant='dark'
+            click={() => history.push('/account')}
+            text='Cancel'
           />
-        </Form.Group>
-
-        <Form.Group controlId='formGridName'>
-          <Form.Label>Full name</Form.Label>
-          <Form.Control
-            type='text'
-            onChange={fullName.onChange}
-            value={fullName.value}
-          />
-        </Form.Group>
-
-        <Form.Group controlId='formGridAddress1'>
-          <Form.Label>Address</Form.Label>
-          <Form.Control
-            type='text'
-            onChange={address.onChange}
-            value={address.value}
-          />
-        </Form.Group>
-
-        <Form.Row>
-          <Form.Group as={Col} controlId='formGridCity'>
-            <Form.Label>City</Form.Label>
-            <Form.Control
-              type='text'
-              onChange={city.onChange}
-              value={city.value}
-            />
-          </Form.Group>
-
-          <Form.Group as={Col} controlId='formGridZip'>
-            <Form.Label>Zipcode</Form.Label>
-            <Form.Control
-              type='text'
-              onChange={zipCode.onChange}
-              value={zipCode.value}
-            />
-          </Form.Group>
-        </Form.Row>
-        <Form.Group controlId='formGridName'>
-          <Form.Label>Phone number</Form.Label>
-          <Form.Control
-            type='text'
-            onChange={phoneNumber.onChange}
-            value={phoneNumber.value}
-          />
-        </Form.Group>
-
-        <Button variant='primary' type='submit' text='Update' />
-      </Form>
-      <Button
-        variant='dark'
-        click={() => history.push('/account')}
-        text='Cancel'
-      />
+        </div>
+      ) : (
+        <Spinner />
+      )}
     </div>
   );
 };

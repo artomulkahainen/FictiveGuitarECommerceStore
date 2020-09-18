@@ -1,4 +1,3 @@
 - fix buttons on small screens
 - add create account page
 - fix bug, that when logging in, you cant straightway change account details. It has something to do with setToken function.
-- add modal telling if something was successful or not

@@ -9,6 +9,7 @@ import userService from '../../services/userService';
 import { loginUser } from '../../store/reducers/userLoggedReducer';
 import { getUserDetails } from '../../store/reducers/userDetailsReducer';
 import Button from '../Button/Button';
+import { setAlert, removeAlert } from '../../store/reducers/alertReducer';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -35,6 +36,14 @@ const Login = () => {
       // DISPATCH USER DETAILS
       dispatch(getUserDetails());
 
+      // DISPATCH ALERTS
+      dispatch(
+        setAlert({ type: 'success', message: `Welcome ${username.value}!` })
+      );
+      setTimeout(() => {
+        dispatch(removeAlert());
+      }, 5000);
+
       // CLEAR FIELDS
       username.value = '';
       password.value = '';
@@ -42,9 +51,16 @@ const Login = () => {
       // REDIRECT TO HOME PAGE
       history.push('/');
     } catch (exception) {
+      // DISPATCH ALERTS
+      dispatch(setAlert({ type: 'danger', message: `${exception}` }));
+      setTimeout(() => {
+        dispatch(removeAlert());
+      }, 5000);
+
       console.log('error with logging in!');
     }
   };
+
   return (
     <div
       className={classes.Login}
@@ -52,13 +68,13 @@ const Login = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        /*justifyContent: 'center',*/
         height: '1000px',
       }}>
       <LoginForm onSubmit={onSubmit} username={username} password={password} />
       <br />
       <Button
         text='Create account'
+        variant='info'
         click={() => history.push('/createaccount')}
       />
     </div>

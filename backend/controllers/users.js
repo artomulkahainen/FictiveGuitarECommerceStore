@@ -81,7 +81,6 @@ usersRouter.put('/', async (req, res, next) => {
     id,
     {
       $set: {
-        username: req.body.username,
         email: req.body.email,
         details: req.body.details,
       },

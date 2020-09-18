@@ -8,6 +8,7 @@ import styles from './Guitars.module.css';
 import Item from '../../components/Item/Item';
 import Button from '../../components/Button/Button';
 import uniqid from 'uniqid';
+import Spinner from '../../components/SpinnerItem/SpinnerItem';
 
 const Guitars = () => {
   const images = {
@@ -22,17 +23,19 @@ const Guitars = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <div className={styles.Guitars}>
-        {guitarData
-          ? guitarData.map((guitar) => (
-              <Item
-                key={uniqid()}
-                item={guitar.title}
-                img={images[guitar.title.toLowerCase()]}
-                price={guitar.price + '0€'}
-                click={() => console.log('This guitar is', guitar.title)}
-              />
-            ))
-          : null}
+        {guitarData ? (
+          guitarData.map((guitar) => (
+            <Item
+              key={uniqid()}
+              item={guitar.title}
+              img={images[guitar.title.toLowerCase()]}
+              price={guitar.price + '0€'}
+              click={() => console.log('This guitar is', guitar.title)}
+            />
+          ))
+        ) : (
+          <Spinner />
+        )}
       </div>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Button

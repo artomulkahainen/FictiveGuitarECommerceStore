@@ -9,6 +9,7 @@ const ordersRouter = require('./controllers/orders');
 const loginRouter = require('./controllers/login');
 const logger = require('./utils/logger');
 const middleware = require('./utils/middleware');
+const morgan = require('morgan');
 
 mongoose
   .connect(config.MONGODB_URI, {
@@ -20,8 +21,18 @@ mongoose
   .catch(() => logger.error('Something went wrong with connection to db'));
 
 mongoose.set('useFindAndModify', false);
+
+morgan.token('body', (req) => {
+  return JSON.stringify(req.body);
+});
+
 app.use(cors());
 app.use(express.json());
+app.use(
+  morgan(
+    ':method :url :status :response-time ms - :res[content-length] :body - :req[content-length]'
+  )
+);
 
 app.use('/api/guitars', guitarsRouter);
 app.use('/api/users', usersRouter);

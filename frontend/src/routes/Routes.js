@@ -12,6 +12,7 @@ import CreateAccount from '../containers/Account/CreateAccount/CreateAccount';
 import Cart from '../containers/Cart/Cart';
 import Checkout from '../containers/Checkout/Checkout';
 import { clearUserDetails } from '../store/reducers/userDetailsReducer';
+import { setAlert, removeAlert } from '../store/reducers/alertReducer';
 
 const Routes = () => {
   const user = useSelector(({ userLogged }) => userLogged);
@@ -19,10 +20,25 @@ const Routes = () => {
   const dispatch = useDispatch();
 
   const logout = () => {
+    // CLEAR WEB BROWSER STORAGE
     window.localStorage.clear();
+
+    // CLEAR TOKEN
     userService.setToken(null);
+
+    // CLEAR PREVIOUS USER DETAILS
     dispatch(checkUser(null));
     dispatch(clearUserDetails());
+
+    // DISPATCH ALERTS
+    dispatch(
+      setAlert({ type: 'success', message: 'Successfully logged out.' })
+    );
+    setTimeout(() => {
+      dispatch(removeAlert());
+    }, 5000);
+
+    // REDIRECT TO HOME PAGE
     history.push('/');
   };
 
