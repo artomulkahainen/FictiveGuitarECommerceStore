@@ -7,7 +7,6 @@ import Login from '../components/Login/Login';
 import { checkUser } from '../store/reducers/userLoggedReducer';
 import userService from '../services/userService';
 import Account from '../containers/Account/Account';
-import DetailsForm from '../containers/Account/DetailsForm/DetailsForm';
 import CreateAccount from '../containers/Account/CreateAccount/CreateAccount';
 import Cart from '../containers/Cart/Cart';
 import Checkout from '../containers/Checkout/Checkout';

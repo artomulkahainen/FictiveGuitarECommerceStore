@@ -4,9 +4,8 @@ import styles from './Home.module.css';
 const Home = () => {
   return (
     <div className={styles.Home}>
-      <h1 style={{ display: 'flex', justifyContent: 'center' }}>
-        Welcome to Artzi's Guitar Store!
-      </h1>
+      <h1>Welcome to Artzi's Guitar Store!</h1>
+      <p>THIS IS FICTIVE SITE. DON'T SEND YOUR REAL DETAILS HERE!</p>
     </div>
   );
 };

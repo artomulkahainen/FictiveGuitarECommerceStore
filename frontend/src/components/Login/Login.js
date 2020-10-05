@@ -28,7 +28,7 @@ const Login = () => {
 
       // STORE DATA IN LOCAL STORAGE AND USER SERVICE
       window.localStorage.setItem('loggedUser', JSON.stringify(user));
-      userService.setToken(user);
+      userService.setToken(user.token);
 
       // DISPATCH USER LOGIN
       dispatch(loginUser(user));
@@ -71,7 +71,6 @@ const Login = () => {
         height: '1000px',
       }}>
       <LoginForm onSubmit={onSubmit} username={username} password={password} />
-      <br />
       <Button
         text='Create account'
         variant='info'

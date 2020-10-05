@@ -8,8 +8,6 @@ const setToken = (newToken) => {
 };
 
 const getUserDetails = async () => {
-  console.log('token after getting userDetails');
-  console.log(token);
   if (token) {
     try {
       const loggedUser = window.localStorage.getItem('loggedUser');
@@ -21,6 +19,26 @@ const getUserDetails = async () => {
     }
   }
   return null;
+};
+
+const createUser = async (userDetails) => {
+  try {
+    const res = await axios.post(baseUrl, {
+      username: userDetails.username,
+      password: userDetails.password,
+      email: userDetails.email,
+      details: {
+        name: userDetails.details.name,
+        address: userDetails.details.address,
+        zipCode: userDetails.details.zipCode,
+        city: userDetails.details.city,
+        phoneNumber: userDetails.details.phoneNumber,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    return error.message;
+  }
 };
 
 const modifyUserDetails = async (modifiedUserDetails) => {
@@ -53,4 +71,10 @@ const modifyUserDetails = async (modifiedUserDetails) => {
   return null;
 };
 
-export default { setToken, token, getUserDetails, modifyUserDetails };
+export default {
+  setToken,
+  token,
+  getUserDetails,
+  modifyUserDetails,
+  createUser,
+};
