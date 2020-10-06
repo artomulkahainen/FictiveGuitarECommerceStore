@@ -1,12 +1,11 @@
 import React from 'react';
-import useField from '../../../hooks/useField';
 import { Form, Col } from 'react-bootstrap';
 import Button from '../../../components/Button/Button';
 import userService from '../../../services/userService';
 import { setAlert, removeAlert } from '../../../store/reducers/alertReducer';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Formik, ErrorMessage } from 'formik';
+import { Formik } from 'formik';
 import * as yup from 'yup';
 
 const CreateAccount = () => {
@@ -20,17 +19,17 @@ const CreateAccount = () => {
       .max(15, 'Username too long!'),
     password: yup
       .string()
-      .required('password is required')
-      .min(5, 'password must be at least 5 characters long!'),
+      .required('Password is required!')
+      .min(5, 'Password must be at least 5 characters long!'),
     email: yup
       .string()
-      .email('Please insert an email!')
-      .required('email is required'),
-    name: yup.string().required('name is required'),
-    address: yup.string().required('address is required'),
-    zipCode: yup.string().required('zip code is required'),
-    city: yup.string().required('city is required'),
-    phoneNumber: yup.string().required('phone number is required'),
+      .email('Please insert correct email address! (eg. your_name@gmail.com)')
+      .required('Please insert an email address!'),
+    name: yup.string().required('Your name is required!'),
+    address: yup.string().required('Your address is required!'),
+    zipCode: yup.string().required('Your zip code is required!'),
+    city: yup.string().required('Your city is required!'),
+    phoneNumber: yup.string().required('Your phone number is required!'),
   });
 
   const formSendHandler = async (values) => {
@@ -105,10 +104,10 @@ const CreateAccount = () => {
         {({
           handleSubmit,
           handleChange,
+          handleBlur,
+          touched,
           values,
           errors,
-          touched,
-          setTouched,
         }) => (
           <Form noValidate onSubmit={handleSubmit}>
             <Form.Row>
@@ -120,18 +119,19 @@ const CreateAccount = () => {
                   placeholder='Username'
                   value={values.username}
                   onChange={handleChange}
-                  isValid={!errors.username}
+                  isValid={!errors.username && touched.username}
+                  onBlur={handleBlur}
                   style={
-                    !errors.username
-                      ? { borderStyle: 'solid', borderColor: 'green' }
-                      : { borderStyle: 'solid', borderColor: 'red' }
+                    errors.username && touched.username
+                      ? { borderStyle: 'solid', borderColor: 'red' }
+                      : null
                   }
                 />
-                {errors.username ? (
+                {errors.username && touched.username ? (
                   <p style={{ color: 'red' }}>{errors.username}</p>
                 ) : null}
               </Form.Group>
-
+              guitars
               <Form.Group as={Col} controlId='formGridPassword'>
                 <Form.Label>Password</Form.Label>
                 <Form.Control
@@ -140,14 +140,15 @@ const CreateAccount = () => {
                   placeholder='Password'
                   value={values.password}
                   onChange={handleChange}
-                  isValid={!errors.password}
+                  isValid={!errors.password && touched.password}
+                  onBlur={handleBlur}
                   style={
-                    !errors.password
-                      ? { borderStyle: 'solid', borderColor: 'green' }
-                      : { borderStyle: 'solid', borderColor: 'red' }
+                    errors.password && touched.password
+                      ? { borderStyle: 'solid', borderColor: 'red' }
+                      : null
                   }
                 />
-                {errors.password ? (
+                {errors.password && touched.password ? (
                   <p style={{ color: 'red' }}>{errors.password}</p>
                 ) : null}
               </Form.Group>
@@ -160,9 +161,15 @@ const CreateAccount = () => {
                 name='name'
                 value={values.name}
                 onChange={handleChange}
-                isValid={!errors.name}
+                isValid={!errors.name && touched.name}
+                onBlur={handleBlur}
+                style={
+                  errors.name && touched.name
+                    ? { borderStyle: 'solid', borderColor: 'red' }
+                    : null
+                }
               />
-              {errors.name ? (
+              {errors.name && touched.name ? (
                 <p style={{ color: 'red' }}>{errors.name}</p>
               ) : null}
             </Form.Group>
@@ -174,8 +181,17 @@ const CreateAccount = () => {
                 name='email'
                 value={values.email}
                 onChange={handleChange}
-                isValid={!errors.email}
+                isValid={!errors.email && touched.email}
+                onBlur={handleBlur}
+                style={
+                  errors.email && touched.email
+                    ? { borderStyle: 'solid', borderColor: 'red' }
+                    : null
+                }
               />
+              {errors.email && touched.email ? (
+                <p style={{ color: 'red' }}>{errors.email}</p>
+              ) : null}
             </Form.Group>
 
             <Form.Group controlId='Address'>
@@ -185,8 +201,17 @@ const CreateAccount = () => {
                 name='address'
                 value={values.address}
                 onChange={handleChange}
-                isValid={!errors.address}
+                isValid={!errors.address && touched.address}
+                onBlur={handleBlur}
+                style={
+                  errors.address && touched.address
+                    ? { borderStyle: 'solid', borderColor: 'red' }
+                    : null
+                }
               />
+              {errors.address && touched.address ? (
+                <p style={{ color: 'red' }}>{errors.address}</p>
+              ) : null}
             </Form.Group>
 
             <Form.Row>
@@ -197,8 +222,17 @@ const CreateAccount = () => {
                   name='city'
                   value={values.city}
                   onChange={handleChange}
-                  isValid={!errors.city}
+                  isValid={!errors.city && touched.city}
+                  onBlur={handleBlur}
+                  style={
+                    errors.city && touched.city
+                      ? { borderStyle: 'solid', borderColor: 'red' }
+                      : null
+                  }
                 />
+                {errors.city && touched.city ? (
+                  <p style={{ color: 'red' }}>{errors.city}</p>
+                ) : null}
               </Form.Group>
 
               <Form.Group as={Col} controlId='formGridZip'>
@@ -208,8 +242,17 @@ const CreateAccount = () => {
                   name='zipCode'
                   value={values.zipCode}
                   onChange={handleChange}
-                  isValid={!errors.zipCode}
+                  isValid={!errors.zipCode && touched.zipCode}
+                  onBlur={handleBlur}
+                  style={
+                    errors.zipCode && touched.zipCode
+                      ? { borderStyle: 'solid', borderColor: 'red' }
+                      : null
+                  }
                 />
+                {errors.zipCode && touched.zipCode ? (
+                  <p style={{ color: 'red' }}>{errors.zipCode}</p>
+                ) : null}
               </Form.Group>
             </Form.Row>
 
@@ -220,8 +263,17 @@ const CreateAccount = () => {
                 name='phoneNumber'
                 value={values.phoneNumber}
                 onChange={handleChange}
-                isValid={!errors.phoneNumber}
+                isValid={!errors.phoneNumber && touched.phoneNumber}
+                onBlur={handleBlur}
+                style={
+                  errors.phoneNumber && touched.phoneNumber
+                    ? { borderStyle: 'solid', borderColor: 'red' }
+                    : null
+                }
               />
+              {errors.phoneNumber && touched.phoneNumber ? (
+                <p style={{ color: 'red' }}>{errors.phoneNumber}</p>
+              ) : null}
             </Form.Group>
 
             <Button variant='primary' type='submit' text='Submit' />

@@ -9,7 +9,7 @@ import userService from '../services/userService';
 import Account from '../containers/Account/Account';
 import CreateAccount from '../containers/Account/CreateAccount/CreateAccount';
 import Cart from '../containers/Cart/Cart';
-import Checkout from '../containers/Checkout/Checkout';
+import Checkout from '../components/Checkout/Checkout';
 import { clearUserDetails } from '../store/reducers/userDetailsReducer';
 import { setAlert, removeAlert } from '../store/reducers/alertReducer';
 

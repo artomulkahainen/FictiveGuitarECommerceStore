@@ -52,12 +52,15 @@ const Login = () => {
       history.push('/');
     } catch (exception) {
       // DISPATCH ALERTS
-      dispatch(setAlert({ type: 'danger', message: `${exception}` }));
+      dispatch(
+        setAlert({
+          type: 'danger',
+          message: `${exception}. Did you write your credentials correctly?`,
+        })
+      );
       setTimeout(() => {
         dispatch(removeAlert());
       }, 5000);
-
-      console.log('error with logging in!');
     }
   };
 
