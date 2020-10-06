@@ -1,2 +1,3 @@
 - fix buttons on small screens
-- Style account page
+- Change password must be implemented
+-

@@ -12,6 +12,7 @@ const CreateAccount = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  // YUP SCHEMA FOR VALIDATING THE FORMIK FORMS
   const createAccountSchema = yup.object({
     username: yup
       .string()
@@ -131,7 +132,7 @@ const CreateAccount = () => {
                   <p style={{ color: 'red' }}>{errors.username}</p>
                 ) : null}
               </Form.Group>
-              guitars
+
               <Form.Group as={Col} controlId='formGridPassword'>
                 <Form.Label>Password</Form.Label>
                 <Form.Control
