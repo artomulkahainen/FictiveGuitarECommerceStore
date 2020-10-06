@@ -6,34 +6,45 @@ import userService from '../../../services/userService';
 import { setAlert, removeAlert } from '../../../store/reducers/alertReducer';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { Formik, ErrorMessage } from 'formik';
+import * as yup from 'yup';
 
 const CreateAccount = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const username = useField('username', '');
-  const password = useField('password', '');
-  const name = useField('name', '');
-  const email = useField('email', '');
-  const address = useField('address', '');
-  const city = useField('city', '');
-  const zipCode = useField('zipcode', '');
-  const phoneNumber = useField('phonenumber', '');
+  const createAccountSchema = yup.object({
+    username: yup
+      .string()
+      .required("Username can't be empty!")
+      .max(15, 'Username too long!'),
+    password: yup
+      .string()
+      .required('password is required')
+      .min(5, 'password must be at least 5 characters long!'),
+    email: yup
+      .string()
+      .email('Please insert an email!')
+      .required('email is required'),
+    name: yup.string().required('name is required'),
+    address: yup.string().required('address is required'),
+    zipCode: yup.string().required('zip code is required'),
+    city: yup.string().required('city is required'),
+    phoneNumber: yup.string().required('phone number is required'),
+  });
 
-  const formSendHandler = async (event) => {
-    event.preventDefault();
-
+  const formSendHandler = async (values) => {
     // CREATE USER OBJECT OF GIVEN VALUES
     const userObject = {
-      username: username.value,
-      password: password.value,
-      email: email.value,
+      username: values.username,
+      password: values.password,
+      email: values.email,
       details: {
-        name: name.value,
-        address: address.value,
-        zipCode: zipCode.value,
-        city: city.value,
-        phoneNumber: phoneNumber.value,
+        name: values.name,
+        address: values.address,
+        zipCode: values.zipCode,
+        city: values.city,
+        phoneNumber: values.phoneNumber,
       },
     };
 
@@ -46,7 +57,7 @@ const CreateAccount = () => {
       dispatch(
         setAlert({
           type: 'danger',
-          message: `${res}. Check that all the required fields are inserted.`,
+          message: `${res}`,
         })
       );
       setTimeout(() => {
@@ -78,88 +89,150 @@ const CreateAccount = () => {
         alignItems: 'center',
       }}>
       <h2>CREATE ACCOUNT</h2>
-      <Form onSubmit={formSendHandler}>
-        <Form.Row>
-          <Form.Group as={Col} controlId='formGridEmail'>
-            <Form.Label>Username</Form.Label>
-            <Form.Control
-              type='username'
-              placeholder='Username'
-              value={username.value}
-              onChange={username.onChange}
+      <Formik
+        validationSchema={createAccountSchema}
+        onSubmit={formSendHandler}
+        initialValues={{
+          username: '',
+          password: '',
+          email: '',
+          name: '',
+          address: '',
+          city: '',
+          zipCode: '',
+          phoneNumber: '',
+        }}>
+        {({
+          handleSubmit,
+          handleChange,
+          values,
+          errors,
+          touched,
+          setTouched,
+        }) => (
+          <Form noValidate onSubmit={handleSubmit}>
+            <Form.Row>
+              <Form.Group as={Col} controlId='formGridEmail'>
+                <Form.Label>Username</Form.Label>
+                <Form.Control
+                  type='text'
+                  name='username'
+                  placeholder='Username'
+                  value={values.username}
+                  onChange={handleChange}
+                  isValid={!errors.username}
+                  style={
+                    !errors.username
+                      ? { borderStyle: 'solid', borderColor: 'green' }
+                      : { borderStyle: 'solid', borderColor: 'red' }
+                  }
+                />
+                {errors.username ? (
+                  <p style={{ color: 'red' }}>{errors.username}</p>
+                ) : null}
+              </Form.Group>
+
+              <Form.Group as={Col} controlId='formGridPassword'>
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  type='password'
+                  name='password'
+                  placeholder='Password'
+                  value={values.password}
+                  onChange={handleChange}
+                  isValid={!errors.password}
+                  style={
+                    !errors.password
+                      ? { borderStyle: 'solid', borderColor: 'green' }
+                      : { borderStyle: 'solid', borderColor: 'red' }
+                  }
+                />
+                {errors.password ? (
+                  <p style={{ color: 'red' }}>{errors.password}</p>
+                ) : null}
+              </Form.Group>
+            </Form.Row>
+
+            <Form.Group controlId='name'>
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                placeholder='Your name'
+                name='name'
+                value={values.name}
+                onChange={handleChange}
+                isValid={!errors.name}
+              />
+              {errors.name ? (
+                <p style={{ color: 'red' }}>{errors.name}</p>
+              ) : null}
+            </Form.Group>
+
+            <Form.Group controlId='email'>
+              <Form.Label>E-mail address</Form.Label>
+              <Form.Control
+                placeholder='Your email'
+                name='email'
+                value={values.email}
+                onChange={handleChange}
+                isValid={!errors.email}
+              />
+            </Form.Group>
+
+            <Form.Group controlId='Address'>
+              <Form.Label>Address</Form.Label>
+              <Form.Control
+                placeholder='Your address'
+                name='address'
+                value={values.address}
+                onChange={handleChange}
+                isValid={!errors.address}
+              />
+            </Form.Group>
+
+            <Form.Row>
+              <Form.Group as={Col} controlId='formGridCity'>
+                <Form.Label>City</Form.Label>
+                <Form.Control
+                  placeholder='Your city'
+                  name='city'
+                  value={values.city}
+                  onChange={handleChange}
+                  isValid={!errors.city}
+                />
+              </Form.Group>
+
+              <Form.Group as={Col} controlId='formGridZip'>
+                <Form.Label>Zip</Form.Label>
+                <Form.Control
+                  placeholder='Your zipcode'
+                  name='zipCode'
+                  value={values.zipCode}
+                  onChange={handleChange}
+                  isValid={!errors.zipCode}
+                />
+              </Form.Group>
+            </Form.Row>
+
+            <Form.Group controlId='Phonenumber'>
+              <Form.Label>Phone number</Form.Label>
+              <Form.Control
+                placeholder='Your phone number'
+                name='phoneNumber'
+                value={values.phoneNumber}
+                onChange={handleChange}
+                isValid={!errors.phoneNumber}
+              />
+            </Form.Group>
+
+            <Button variant='primary' type='submit' text='Submit' />
+            <Button
+              variant='dark'
+              text='Cancel'
+              click={() => history.push('/')}
             />
-          </Form.Group>
-
-          <Form.Group as={Col} controlId='formGridPassword'>
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type='password'
-              placeholder='Password'
-              value={password.value}
-              onChange={password.onChange}
-            />
-          </Form.Group>
-        </Form.Row>
-
-        <Form.Group controlId='name'>
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            placeholder='Your name'
-            value={name.value}
-            onChange={name.onChange}
-          />
-        </Form.Group>
-
-        <Form.Group controlId='email'>
-          <Form.Label>E-mail address</Form.Label>
-          <Form.Control
-            placeholder='Your email'
-            value={email.value}
-            onChange={email.onChange}
-          />
-        </Form.Group>
-
-        <Form.Group controlId='Address'>
-          <Form.Label>Address</Form.Label>
-          <Form.Control
-            placeholder='Your address'
-            value={address.value}
-            onChange={address.onChange}
-          />
-        </Form.Group>
-
-        <Form.Row>
-          <Form.Group as={Col} controlId='formGridCity'>
-            <Form.Label>City</Form.Label>
-            <Form.Control
-              placeholder='Your city'
-              value={city.value}
-              onChange={city.onChange}
-            />
-          </Form.Group>
-
-          <Form.Group as={Col} controlId='formGridZip'>
-            <Form.Label>Zip</Form.Label>
-            <Form.Control
-              placeholder='Your zipcode'
-              value={zipCode.value}
-              onChange={zipCode.onChange}
-            />
-          </Form.Group>
-        </Form.Row>
-
-        <Form.Group controlId='Phonenumber'>
-          <Form.Label>Phone number</Form.Label>
-          <Form.Control
-            placeholder='Your phone number'
-            value={phoneNumber.value}
-            onChange={phoneNumber.onChange}
-          />
-        </Form.Group>
-
-        <Button variant='primary' type='submit' text='Submit' />
-        <Button variant='dark' text='Cancel' click={() => history.push('/')} />
-      </Form>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };
