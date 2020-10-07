@@ -29,7 +29,7 @@ const Guitars = () => {
               key={uniqid()}
               item={guitar.title}
               img={images[guitar.title.toLowerCase()]}
-              price={guitar.price + '0€'}
+              price={guitar.price.toFixed(2) + '€'}
               click={() => console.log('This guitar is', guitar.title)}
             />
           ))

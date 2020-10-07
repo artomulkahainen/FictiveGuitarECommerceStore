@@ -55,7 +55,7 @@ const Login = () => {
       dispatch(
         setAlert({
           type: 'danger',
-          message: `${exception}. Did you write your credentials correctly?`,
+          message: `Username or password invalid. Did you write your credentials correctly?`,
         })
       );
       setTimeout(() => {

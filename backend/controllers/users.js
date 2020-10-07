@@ -88,7 +88,7 @@ usersRouter.put('/', async (req, res, next) => {
     { new: true }
   )
     .then((updatedUser) => res.json(updatedUser))
-    .catch((error) => next(error));
+    .catch((error) => /*next(error)*/ res.json({ error: error }));
 });
 
 // PUT -METHOD FOR CHANGING PASSWORD
@@ -117,6 +117,8 @@ usersRouter.put('/password', async (req, res, next) => {
     )
       .then((updatedUser) => res.json(updatedUser))
       .catch((e) => next(e));
+  } else {
+    return res.status(401).send({ error: 'Old password was invalid' });
   }
 });
 

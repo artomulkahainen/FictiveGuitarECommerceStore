@@ -22,8 +22,8 @@ const getUserDetails = async () => {
 };
 
 const createUser = async (userDetails) => {
-  try {
-    const res = await axios.post(baseUrl, {
+  const res = await axios
+    .post(baseUrl, {
       username: userDetails.username,
       password: userDetails.password,
       email: userDetails.email,
@@ -34,27 +34,21 @@ const createUser = async (userDetails) => {
         city: userDetails.details.city,
         phoneNumber: userDetails.details.phoneNumber,
       },
-    });
-    return res.data;
-  } catch (error) {
-    return error.message;
-  }
+    })
+    .then((response) => response.data)
+    .catch((error) => error.response.data);
+
+  return res;
 };
 
 const modifyUserDetails = async (modifiedUserDetails) => {
-  /*
-  console.log('token before modifying details:');
-  console.log(token);*/
   if (token) {
     const options = {
       headers: { Authorization: token },
     };
-    /*
-    console.log('options:');
-    console.log(options);*/
 
-    try {
-      const res = await axios.put(
+    const res = await axios
+      .put(
         baseUrl,
         {
           username: modifiedUserDetails.username,
@@ -62,11 +56,10 @@ const modifyUserDetails = async (modifiedUserDetails) => {
           details: modifiedUserDetails.details,
         },
         options
-      );
-      return res.data;
-    } catch (error) {
-      console.log(error);
-    }
+      )
+      .then((response) => response.data)
+      .catch((error) => error.response.data);
+    return res;
   }
   return null;
 };
@@ -78,19 +71,19 @@ const changePassword = async (passwordObject) => {
       headers: { Authorization: token },
     };
 
-    try {
-      const res = await axios.put(
+    const response = await axios
+      .put(
         baseUrl + '/password',
         {
           oldPassword: passwordObject.oldPassword,
           newPassword: passwordObject.newPassword,
         },
         options
-      );
-      return res.data;
-    } catch (error) {
-      return error;
-    }
+      )
+      .then((res) => res.data)
+      .catch((error) => error.response.data);
+
+    return response;
   }
   return null;
 };

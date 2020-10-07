@@ -24,8 +24,6 @@ const ChangePassword = () => {
   });
 
   const passwordChangeHandler = async (values) => {
-    console.log(values.oldPassword);
-
     if (values.newPassword === values.newPasswordAgain) {
       const newPasswordObject = {
         oldPassword: values.oldPassword,
@@ -34,25 +32,26 @@ const ChangePassword = () => {
 
       const res = await userService.changePassword(newPasswordObject);
 
-      console.log('console logging results: ');
-      console.log(res);
-      if (!res.username) {
-        // DISPATCH ALERTS
-        dispatch(
-          setAlert({
-            type: 'danger',
-            message: `${res}`,
-          })
-        );
-        setTimeout(() => {
-          dispatch(removeAlert());
-        }, 5000);
-      } else {
+      // IF RESPONSE IS NOT ERROR
+      if (!res.error) {
         // DISPATCH ALERTS
         dispatch(
           setAlert({
             type: 'success',
             message: `Successfully changed password!`,
+          })
+        );
+        setTimeout(() => {
+          dispatch(removeAlert());
+        }, 5000);
+
+        // IF RESPONSE IS ERROR
+      } else {
+        // DISPATCH ALERTS
+        dispatch(
+          setAlert({
+            type: 'danger',
+            message: `${res.error}`,
           })
         );
         setTimeout(() => {

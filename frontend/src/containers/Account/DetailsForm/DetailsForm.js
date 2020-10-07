@@ -3,41 +3,72 @@ import { Form, Col } from 'react-bootstrap';
 import Spinner from '../../../components/SpinnerItem/SpinnerItem';
 import { useDispatch } from 'react-redux';
 import Button from '../../../components/Button/Button';
-import useField from '../../../hooks/useField';
+//import useField from '../../../hooks/useField';
 import userService from '../../../services/userService';
 import { updateUserDetails } from '../../../store/reducers/userDetailsReducer';
+import { setAlert, removeAlert } from '../../../store/reducers/alertReducer';
+import * as yup from 'yup';
+import { Formik } from 'formik';
 
 const DetailsForm = ({ data }) => {
   const dispatch = useDispatch();
 
-  const email = useField('email', data.email);
-  const fullName = useField('text', data.details.name);
-  const address = useField('text', data.details.address);
-  const zipCode = useField('text', data.details.zipCode);
-  const city = useField('text', data.details.city);
-  const phoneNumber = useField('text', data.details.phoneNumber);
+  // YUP SCHEMA FOR VALIDATING THE FORMIK FORMS
+  const modifyDetailsSchema = yup.object({
+    email: yup
+      .string()
+      .email('Please insert correct email address! (eg. your_name@gmail.com)')
+      .required('Email is required!'),
+    name: yup.string().required('Your name is required!'),
+    address: yup.string().required('Your address is required!'),
+    zipCode: yup.string().required('Your zip code is required!'),
+    city: yup.string().required('Your city is required!'),
+    phoneNumber: yup.string().required('Your phone number is required!'),
+  });
 
-  const formSendHandler = async (event) => {
-    event.preventDefault();
+  const formSendHandler = async (values) => {
+    // CREATE NEW USER DETAIL OBJECT OF GIVEN VALUES
     const newObject = {
-      //username: username.value,
-      email: email.value,
+      email: values.email,
       details: {
-        name: fullName.value,
-        address: address.value,
-        zipCode: zipCode.value,
-        city: city.value,
-        phoneNumber: phoneNumber.value,
+        name: values.name,
+        address: values.address,
+        zipCode: values.zipCode,
+        city: values.city,
+        phoneNumber: values.phoneNumber,
       },
     };
-    try {
-      // UPDATE USER DETAILS IN MONGODB
-      await userService.modifyUserDetails(newObject);
 
-      // DISPATCH NEW USER DETAILS TO REDUX
+    // PUT MODIFIED DETAILS INTO MONGODB
+    const res = await userService.modifyUserDetails(newObject);
+
+    // IF NO ERROR OCCURED
+    if (!res.error) {
       dispatch(updateUserDetails(newObject));
-    } catch (error) {
-      console.log(error);
+      dispatch(
+        setAlert({
+          type: 'success',
+          message: 'User details modified successfully!',
+        })
+      );
+      setTimeout(() => {
+        dispatch(removeAlert());
+      }, 5000);
+
+      // IF ERROR OCCURED
+    } else {
+      dispatch(
+        setAlert({
+          type: 'danger',
+          message:
+            res.error.codeName === 'DuplicateKey'
+              ? 'Email is already taken.'
+              : 'error occured',
+        })
+      );
+      setTimeout(() => {
+        dispatch(removeAlert());
+      }, 5000);
     }
   };
 
@@ -45,64 +76,151 @@ const DetailsForm = ({ data }) => {
     <div>
       {data ? (
         <div>
-          <Form onSubmit={formSendHandler}>
-            <Form.Group controlId='formGridEmail'>
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type='email'
-                onChange={email.onChange}
-                value={email.value}
-              />
-            </Form.Group>
+          <Formik
+            validationSchema={modifyDetailsSchema}
+            onSubmit={formSendHandler}
+            initialValues={{
+              email: data.email,
+              name: data.details.name,
+              address: data.details.address,
+              zipCode: data.details.zipCode,
+              city: data.details.city,
+              phoneNumber: data.details.phoneNumber,
+            }}>
+            {({
+              handleBlur,
+              handleChange,
+              handleSubmit,
+              touched,
+              values,
+              errors,
+            }) => (
+              <Form noValidate onSubmit={handleSubmit}>
+                <Form.Group controlId='formGridEmail'>
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    type='email'
+                    name='email'
+                    onBlur={handleBlur}
+                    isValid={!errors.email && touched.email}
+                    onChange={handleChange}
+                    value={values.email}
+                    style={
+                      errors.email && touched.email
+                        ? { borderStyle: 'solid', borderColor: 'red' }
+                        : null
+                    }
+                  />
+                  {errors.email && touched.email ? (
+                    <p style={{ color: 'red' }}>{errors.email}</p>
+                  ) : null}
+                </Form.Group>
 
-            <Form.Group controlId='formGridName'>
-              <Form.Label>Full name</Form.Label>
-              <Form.Control
-                type='text'
-                onChange={fullName.onChange}
-                value={fullName.value}
-              />
-            </Form.Group>
+                <Form.Group controlId='formGridName'>
+                  <Form.Label>Full name</Form.Label>
+                  <Form.Control
+                    type='text'
+                    name='name'
+                    onBlur={handleBlur}
+                    isValid={!errors.name && touched.name}
+                    onChange={handleChange}
+                    value={values.name}
+                    style={
+                      errors.name && touched.name
+                        ? { borderStyle: 'solid', borderColor: 'red' }
+                        : null
+                    }
+                  />
+                  {errors.name && touched.name ? (
+                    <p style={{ color: 'red' }}>{errors.name}</p>
+                  ) : null}
+                </Form.Group>
 
-            <Form.Group controlId='formGridAddress1'>
-              <Form.Label>Address</Form.Label>
-              <Form.Control
-                type='text'
-                onChange={address.onChange}
-                value={address.value}
-              />
-            </Form.Group>
+                <Form.Group controlId='formGridAddress1'>
+                  <Form.Label>Address</Form.Label>
+                  <Form.Control
+                    type='text'
+                    name='address'
+                    onBlur={handleBlur}
+                    isValid={!errors.address && touched.address}
+                    onChange={handleChange}
+                    value={values.address}
+                    style={
+                      errors.address && touched.address
+                        ? { borderStyle: 'solid', borderColor: 'red' }
+                        : null
+                    }
+                  />
+                  {errors.address && touched.address ? (
+                    <p style={{ color: 'red' }}>{errors.address}</p>
+                  ) : null}
+                </Form.Group>
 
-            <Form.Row>
-              <Form.Group as={Col} controlId='formGridCity'>
-                <Form.Label>City</Form.Label>
-                <Form.Control
-                  type='text'
-                  onChange={city.onChange}
-                  value={city.value}
-                />
-              </Form.Group>
+                <Form.Row>
+                  <Form.Group as={Col} controlId='formGridCity'>
+                    <Form.Label>City</Form.Label>
+                    <Form.Control
+                      type='text'
+                      name='city'
+                      onBlur={handleBlur}
+                      isValid={!errors.city && touched.city}
+                      onChange={handleChange}
+                      value={values.city}
+                      style={
+                        errors.city && touched.city
+                          ? { borderStyle: 'solid', borderColor: 'red' }
+                          : null
+                      }
+                    />
+                    {errors.city && touched.city ? (
+                      <p style={{ color: 'red' }}>{errors.city}</p>
+                    ) : null}
+                  </Form.Group>
 
-              <Form.Group as={Col} controlId='formGridZip'>
-                <Form.Label>Zipcode</Form.Label>
-                <Form.Control
-                  type='text'
-                  onChange={zipCode.onChange}
-                  value={zipCode.value}
-                />
-              </Form.Group>
-            </Form.Row>
-            <Form.Group controlId='formGridName'>
-              <Form.Label>Phone number</Form.Label>
-              <Form.Control
-                type='text'
-                onChange={phoneNumber.onChange}
-                value={phoneNumber.value}
-              />
-            </Form.Group>
+                  <Form.Group as={Col} controlId='formGridZip'>
+                    <Form.Label>Zip code</Form.Label>
+                    <Form.Control
+                      type='text'
+                      name='zipCode'
+                      onBlur={handleBlur}
+                      isValid={!errors.zipCode && touched.zipCode}
+                      onChange={handleChange}
+                      value={values.zipCode}
+                      style={
+                        errors.zipCode && touched.zipCode
+                          ? { borderStyle: 'solid', borderColor: 'red' }
+                          : null
+                      }
+                    />
+                    {errors.zipCode && touched.zipCode ? (
+                      <p style={{ color: 'red' }}>{errors.zipCode}</p>
+                    ) : null}
+                  </Form.Group>
+                </Form.Row>
+                <Form.Group controlId='formGridName'>
+                  <Form.Label>Phone number</Form.Label>
+                  <Form.Control
+                    type='text'
+                    name='phoneNumber'
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    isValid={!errors.phoneNumber && touched.phoneNumber}
+                    value={values.phoneNumber}
+                    style={
+                      errors.phoneNumber && touched.phoneNumber
+                        ? { borderStyle: 'solid', borderColor: 'red' }
+                        : null
+                    }
+                  />
+                  {errors.phoneNumber && touched.phoneNumber ? (
+                    <p style={{ color: 'red' }}>{errors.phoneNumber}</p>
+                  ) : null}
+                </Form.Group>
 
-            <Button variant='primary' type='submit' text='Update' />
-          </Form>
+                <Button variant='primary' type='submit' text='Update' />
+              </Form>
+            )}
+          </Formik>
         </div>
       ) : (
         <Spinner />

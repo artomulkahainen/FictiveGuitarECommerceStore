@@ -52,17 +52,39 @@ const CreateAccount = () => {
     const res = await userService.createUser(userObject);
 
     // IF CREATE USER FAILED
-    if (!res.username) {
+    if (res.error) {
       // DISPATCH ALERTS
-      dispatch(
-        setAlert({
-          type: 'danger',
-          message: `${res}`,
-        })
-      );
-      setTimeout(() => {
-        dispatch(removeAlert());
-      }, 5000);
+      if (res.error.username) {
+        dispatch(
+          setAlert({
+            type: 'danger',
+            message: `${res.error.username.message}`,
+          })
+        );
+        setTimeout(() => {
+          dispatch(removeAlert());
+        }, 5000);
+      } else if (res.error.email) {
+        dispatch(
+          setAlert({
+            type: 'danger',
+            message: `${res.error.email.message}`,
+          })
+        );
+        setTimeout(() => {
+          dispatch(removeAlert());
+        }, 5000);
+      } else {
+        dispatch(
+          setAlert({
+            type: 'danger',
+            message: 'error occured',
+          })
+        );
+        setTimeout(() => {
+          dispatch(removeAlert());
+        }, 5000);
+      }
 
       // IF CREATE USER WAS SUCCESSFUL
     } else {
