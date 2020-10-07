@@ -71,10 +71,35 @@ const modifyUserDetails = async (modifiedUserDetails) => {
   return null;
 };
 
+const changePassword = async (passwordObject) => {
+  // CHECK IF USER IS LOGGED IN
+  if (token) {
+    const options = {
+      headers: { Authorization: token },
+    };
+
+    try {
+      const res = await axios.put(
+        baseUrl + '/password',
+        {
+          oldPassword: passwordObject.oldPassword,
+          newPassword: passwordObject.newPassword,
+        },
+        options
+      );
+      return res.data;
+    } catch (error) {
+      return error;
+    }
+  }
+  return null;
+};
+
 export default {
   setToken,
   token,
   getUserDetails,
   modifyUserDetails,
   createUser,
+  changePassword,
 };

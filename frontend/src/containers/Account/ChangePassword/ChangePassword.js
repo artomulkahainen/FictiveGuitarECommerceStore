@@ -1,10 +1,15 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import { Formik } from 'formik';
+import { setAlert, removeAlert } from '../../../store/reducers/alertReducer';
 import * as yup from 'yup';
 import Button from '../../../components/Button/Button';
+import { useDispatch } from 'react-redux';
+import userService from '../../../services/userService';
 
 const ChangePassword = () => {
+  const dispatch = useDispatch();
+
   // YUP SCHEMA FOR VALIDATING PASSWORD CHANGE IN FORMIK FORMS
   const changePasswordSchema = yup.object({
     oldPassword: yup.string().required("Old password field can't be empty!"),
@@ -18,9 +23,54 @@ const ChangePassword = () => {
       .required("New password field can't be empty!"),
   });
 
-  const passwordChangeHandler = async (event, values) => {
-    console.log('hello world! i got these values: ');
+  const passwordChangeHandler = async (values) => {
     console.log(values.oldPassword);
+
+    if (values.newPassword === values.newPasswordAgain) {
+      const newPasswordObject = {
+        oldPassword: values.oldPassword,
+        newPassword: values.newPassword,
+      };
+
+      const res = await userService.changePassword(newPasswordObject);
+
+      console.log('console logging results: ');
+      console.log(res);
+      if (!res.username) {
+        // DISPATCH ALERTS
+        dispatch(
+          setAlert({
+            type: 'danger',
+            message: `${res}`,
+          })
+        );
+        setTimeout(() => {
+          dispatch(removeAlert());
+        }, 5000);
+      } else {
+        // DISPATCH ALERTS
+        dispatch(
+          setAlert({
+            type: 'success',
+            message: `Successfully changed password!`,
+          })
+        );
+        setTimeout(() => {
+          dispatch(removeAlert());
+        }, 5000);
+      }
+    } else {
+      // DISPATCH ALERTS
+      dispatch(
+        setAlert({
+          type: 'danger',
+          message: `The new passwords doesn't match!`,
+        })
+      );
+      setTimeout(() => {
+        dispatch(removeAlert());
+      }, 5000);
+    }
   };
 
   return (
