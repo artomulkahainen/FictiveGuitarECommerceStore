@@ -6,13 +6,30 @@ const tokenValidator = require('../utils/tokenValidator');
 const { param, body, validationResult } = require('express-validator');
 
 // GET -METHODS
-ordersRouter.get('/', async (req, res) => {
+
+// GET ALL ORDERS
+ordersRouter.get('/allOrders', async (req, res) => {
   const orders = await Order.find({});
   orders
     ? res.json(orders.map((order) => order.toJSON()))
     : res.status(404).end();
 });
 
+// GET USER'S OWN ORDERS
+ordersRouter.get('/', async (req, res) => {
+  const id = tokenValidator(req);
+
+  if (!id) {
+    return res.status(401).json({ error: 'token missing or invalid' });
+  }
+
+  const orders = await Order.find({ user: { $in: id } });
+  orders
+    ? res.json(orders.map((order) => order.toJSON()))
+    : res.status(404).end();
+});
+
+// GET ORDER BY ID
 ordersRouter.get(
   '/:id',
   param('id').customSanitizer((value) => ObjectId(value)),
