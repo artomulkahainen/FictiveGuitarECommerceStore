@@ -1,8 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useImperativeHandle } from 'react';
 import Button from '../../components/Button/Button';
 
-const Togglable = (props) => {
+const Togglable = React.forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false);
+
+  const toggleOff = () => {
+    setVisible(false);
+  };
+
+  const onClick = (otherComponents) => {
+    // IF OTHER COMPONENTS ARE VISIBLE, HIDE THEM
+    if (otherComponents) {
+      otherComponents.forEach((el) => el.current.toggleOff());
+    }
+    setVisible(true);
+  };
+
+  useImperativeHandle(ref, () => {
+    return {
+      toggleOff,
+    };
+  });
 
   return (
     <div>
@@ -16,10 +34,13 @@ const Togglable = (props) => {
           />
         </div>
       ) : (
-        <Button text={props.buttonText1} click={() => setVisible(true)} />
+        <Button
+          text={props.buttonText1}
+          click={() => onClick(props.otherComponents)}
+        />
       )}
     </div>
   );
-};
+});
 
 export default Togglable;

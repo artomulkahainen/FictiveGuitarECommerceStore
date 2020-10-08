@@ -3,14 +3,13 @@ import { Form, Col } from 'react-bootstrap';
 import Spinner from '../../../components/SpinnerItem/SpinnerItem';
 import { useDispatch } from 'react-redux';
 import Button from '../../../components/Button/Button';
-//import useField from '../../../hooks/useField';
 import userService from '../../../services/userService';
 import { updateUserDetails } from '../../../store/reducers/userDetailsReducer';
 import { setAlert, removeAlert } from '../../../store/reducers/alertReducer';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 
-const DetailsForm = ({ data }) => {
+const DetailsForm = ({ data, componentToggle }) => {
   const dispatch = useDispatch();
 
   // YUP SCHEMA FOR VALIDATING THE FORMIK FORMS
@@ -42,8 +41,9 @@ const DetailsForm = ({ data }) => {
     // PUT MODIFIED DETAILS INTO MONGODB
     const res = await userService.modifyUserDetails(newObject);
 
-    // IF NO ERROR OCCURED
+    // IF PUT WAS SUCCESSFUL:
     if (!res.error) {
+      // DISPATCH SUCCESS ALERTS
       dispatch(updateUserDetails(newObject));
       dispatch(
         setAlert({
@@ -55,7 +55,10 @@ const DetailsForm = ({ data }) => {
         dispatch(removeAlert());
       }, 5000);
 
-      // IF ERROR OCCURED
+      // HIDE COMPONENT
+      componentToggle.current.toggleOff();
+
+      // IF ERROR OCCURED DURING PUT, DISPATCH ERROR ALERTS
     } else {
       dispatch(
         setAlert({
@@ -63,7 +66,7 @@ const DetailsForm = ({ data }) => {
           message:
             res.error.codeName === 'DuplicateKey'
               ? 'Email is already taken.'
-              : 'error occured',
+              : 'Error occured.',
         })
       );
       setTimeout(() => {

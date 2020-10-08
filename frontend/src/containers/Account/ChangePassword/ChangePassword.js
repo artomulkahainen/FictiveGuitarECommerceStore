@@ -7,9 +7,8 @@ import Button from '../../../components/Button/Button';
 import { useDispatch } from 'react-redux';
 import userService from '../../../services/userService';
 
-const ChangePassword = () => {
+const ChangePassword = ({ componentToggle }) => {
   const dispatch = useDispatch();
-
   // YUP SCHEMA FOR VALIDATING PASSWORD CHANGE IN FORMIK FORMS
   const changePasswordSchema = yup.object({
     oldPassword: yup.string().required("Old password field can't be empty!"),
@@ -24,17 +23,19 @@ const ChangePassword = () => {
   });
 
   const passwordChangeHandler = async (values) => {
+    // CHECK THAT NEW PASSWORDS MATCH
     if (values.newPassword === values.newPasswordAgain) {
       const newPasswordObject = {
         oldPassword: values.oldPassword,
         newPassword: values.newPassword,
       };
 
+      // PUT OLD AND NEW PASSWORD TO MONGODB
       const res = await userService.changePassword(newPasswordObject);
 
-      // IF RESPONSE IS NOT ERROR
+      // IF RESPONSE WAS SUCCESSFUL:
       if (!res.error) {
-        // DISPATCH ALERTS
+        // DISPATCH SUCCESS ALERTS
         dispatch(
           setAlert({
             type: 'success',
@@ -45,9 +46,12 @@ const ChangePassword = () => {
           dispatch(removeAlert());
         }, 5000);
 
-        // IF RESPONSE IS ERROR
+        // HIDE COMPONENT
+        //console.log(componentToggle.current);
+        componentToggle.current.toggleOff();
+
+        // IF RESPONSE IS ERROR, DISPATCH ALERTS
       } else {
-        // DISPATCH ALERTS
         dispatch(
           setAlert({
             type: 'danger',
@@ -58,8 +62,9 @@ const ChangePassword = () => {
           dispatch(removeAlert());
         }, 5000);
       }
+
+      // IF NEW PASSWORDS DON'T MATCH, DISPATCH ALERTS
     } else {
-      // DISPATCH ALERTS
       dispatch(
         setAlert({
           type: 'danger',

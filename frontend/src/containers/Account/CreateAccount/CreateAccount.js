@@ -48,12 +48,11 @@ const CreateAccount = () => {
       },
     };
 
-    // POST USER
+    // POST USER TO MONGODB
     const res = await userService.createUser(userObject);
 
-    // IF CREATE USER FAILED
+    // IF CREATE USER FAILED, DISPATCH ALERTS
     if (res.error) {
-      // DISPATCH ALERTS
       if (res.error.username) {
         dispatch(
           setAlert({
@@ -86,9 +85,9 @@ const CreateAccount = () => {
         }, 5000);
       }
 
-      // IF CREATE USER WAS SUCCESSFUL
+      // IF CREATE USER WAS SUCCESSFUL:
     } else {
-      // DISPATCH ALERTS
+      // DISPATCH SUCCESS ALERTS
       dispatch(
         setAlert({
           type: 'success',
@@ -99,6 +98,7 @@ const CreateAccount = () => {
         dispatch(removeAlert());
       }, 5000);
 
+      // CHANGE CURRENT PAGE BACK TO HOME
       history.push('/');
     }
   };

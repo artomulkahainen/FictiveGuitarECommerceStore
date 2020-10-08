@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import DetailsForm from './DetailsForm/DetailsForm';
 import { useSelector } from 'react-redux';
 import Togglable from '../Togglable/Togglable';
 import ChangePassword from './ChangePassword/ChangePassword';
+import OrdersSummary from './OrdersSummary/OrdersSummary';
 
 const Account = () => {
   const userData = useSelector(({ userDetails }) => userDetails);
+  const ordersRef = useRef();
+  const detailsRef = useRef();
+  const passwordRef = useRef();
 
   const changePasswordHandler = (event) => {
     event.preventDefault();
@@ -33,14 +37,32 @@ const Account = () => {
           flexDirection: 'column',
           alignItems: 'center',
         }}>
-        <Togglable buttonText2='Cancel' buttonText1='Your orders'>
-          <p>Here will be your orders!</p>
+        <Togglable
+          buttonText2='Cancel'
+          buttonText1='Your orders'
+          otherComponents={[passwordRef, detailsRef]}
+          ref={ordersRef}>
+          <OrdersSummary />
         </Togglable>
-        <Togglable buttonText2='Cancel' buttonText1='Edit account details'>
-          <DetailsForm data={userData ? userData : null} />
+        <Togglable
+          buttonText2='Cancel'
+          buttonText1='Edit account details'
+          otherComponents={[passwordRef, ordersRef]}
+          ref={detailsRef}>
+          <DetailsForm
+            data={userData ? userData : null}
+            componentToggle={detailsRef}
+          />
         </Togglable>
-        <Togglable buttonText2='Cancel' buttonText1='Change password'>
-          <ChangePassword handler={changePasswordHandler} />
+        <Togglable
+          buttonText2='Cancel'
+          buttonText1='Change password'
+          otherComponents={[detailsRef, ordersRef]}
+          ref={passwordRef}>
+          <ChangePassword
+            handler={changePasswordHandler}
+            componentToggle={passwordRef}
+          />
         </Togglable>
       </div>
     </div>

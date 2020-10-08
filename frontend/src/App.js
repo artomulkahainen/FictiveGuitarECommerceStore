@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import NavBar from './components/Navigation/NavBar';
 import Routes from './routes/Routes';
-import { useEffect } from 'react';
 import { initGuitars } from './store/reducers/guitarReducer';
 import { checkUser } from './store/reducers/userLoggedReducer';
 import userService from './services/userService';
