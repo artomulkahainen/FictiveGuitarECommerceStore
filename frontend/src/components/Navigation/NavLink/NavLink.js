@@ -19,7 +19,7 @@ const NavLink = ({ to }) => {
   return (
     <div style={{ marginRight: '10px' }}>
       <Link to={`/${to ? to.toLowerCase() : ''}`} style={style}>
-        {to}
+        {!to ? 'Logout' : to}
       </Link>
     </div>
   );

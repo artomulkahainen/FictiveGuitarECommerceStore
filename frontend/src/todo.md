@@ -1,3 +1,3 @@
 - fix buttons on small screens
-- Change password must be implemented
--
+- Order summary is not implemented yet
+- Cart component is not implemented yet

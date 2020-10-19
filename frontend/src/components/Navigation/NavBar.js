@@ -2,10 +2,40 @@ import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 import img from '../../assets/img/acousticguitar.jpg';
 import NavLink from './NavLink/NavLink';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import userService from '../../services/userService';
+import { clearUserDetails } from '../../store/reducers/userDetailsReducer';
+import { setAlert, removeAlert } from '../../store/reducers/alertReducer';
+import { checkUser } from '../../store/reducers/userLoggedReducer';
+import { useHistory } from 'react-router-dom';
 
 const NavBar = () => {
   const user = useSelector(({ userLogged }) => userLogged);
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const logout = () => {
+    // CLEAR WEB BROWSER STORAGE
+    window.localStorage.clear();
+
+    // CLEAR TOKEN
+    userService.setToken(null);
+
+    // CLEAR PREVIOUS USER DETAILS
+    dispatch(checkUser(null));
+    dispatch(clearUserDetails());
+
+    // DISPATCH ALERTS
+    dispatch(
+      setAlert({ type: 'success', message: 'Successfully logged out.' })
+    );
+    setTimeout(() => {
+      dispatch(removeAlert());
+    }, 5000);
+
+    // REDIRECT TO HOME PAGE
+    history.push('/');
+  };
 
   const notUserNavItems = [
     <Nav.Item key='1'>
@@ -29,8 +59,8 @@ const NavBar = () => {
     <Nav.Item key='3'>
       <NavLink to='Account' />
     </Nav.Item>,
-    <Nav.Item key='4'>
-      <NavLink to='Logout' />
+    <Nav.Item key='4' onClick={() => logout()}>
+      <NavLink />
     </Nav.Item>,
   ];
 
