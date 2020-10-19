@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import lp from '../../assets/img/lespaul.jpg';
 import moran from '../../assets/img/moran.jpg';
 import ac2 from '../../assets/img/acousticguitar.jpg';
@@ -11,6 +12,8 @@ import uniqid from 'uniqid';
 import Spinner from '../../components/SpinnerItem/SpinnerItem';
 
 const Guitars = () => {
+  const history = useHistory();
+
   const images = {
     'les paul': lp,
     ukulele: moran,
@@ -41,7 +44,7 @@ const Guitars = () => {
         <Button
           variant='dark'
           text='CHECKOUT'
-          click={() => console.log('entering checkout page')}
+          click={() => history.push('/checkout')}
         />
       </div>
     </div>
