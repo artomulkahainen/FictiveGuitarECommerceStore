@@ -1,8 +1,10 @@
 import axios from 'axios';
-import token from './userService';
+import userService from './userService';
 const baseUrl = 'http://localhost:3001/api/orders';
 
 const getUserOrders = () => {
+  const token = userService.getToken();
+
   if (token) {
     const options = {
       headers: { Authorization: token },
@@ -17,3 +19,5 @@ const getUserOrders = () => {
   }
   return null;
 };
+
+export default { getUserOrders };

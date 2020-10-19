@@ -7,6 +7,8 @@ import OrdersSummary from './OrdersSummary/OrdersSummary';
 
 const Account = () => {
   const userData = useSelector(({ userDetails }) => userDetails);
+  const orderData = useSelector(({ userOrders }) => userOrders);
+  const guitarData = useSelector(({ guitars }) => guitars);
   const ordersRef = useRef();
   const detailsRef = useRef();
   const passwordRef = useRef();
@@ -42,7 +44,7 @@ const Account = () => {
           buttonText1='Your orders'
           otherComponents={[passwordRef, detailsRef]}
           ref={ordersRef}>
-          <OrdersSummary />
+          <OrdersSummary data={orderData} guitarData={guitarData} />
         </Togglable>
         <Togglable
           buttonText2='Cancel'

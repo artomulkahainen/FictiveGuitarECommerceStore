@@ -6,6 +6,7 @@ import { initGuitars } from './store/reducers/guitarReducer';
 import { checkUser } from './store/reducers/userLoggedReducer';
 import userService from './services/userService';
 import { getUserDetails } from './store/reducers/userDetailsReducer';
+import { initOrders } from './store/reducers/userOrdersReducer';
 import Alert from './components/Alerts/Alerts';
 
 const App = () => {
@@ -20,6 +21,7 @@ const App = () => {
       userService.setToken(user.token);
       dispatch(checkUser(user));
       dispatch(getUserDetails());
+      dispatch(initOrders());
     }
   }, [dispatch]);
 

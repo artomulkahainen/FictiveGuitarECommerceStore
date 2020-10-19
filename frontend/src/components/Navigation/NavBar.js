@@ -5,6 +5,7 @@ import NavLink from './NavLink/NavLink';
 import { useSelector, useDispatch } from 'react-redux';
 import userService from '../../services/userService';
 import { clearUserDetails } from '../../store/reducers/userDetailsReducer';
+import { clearOrders } from '../../store/reducers/userOrdersReducer';
 import { setAlert, removeAlert } from '../../store/reducers/alertReducer';
 import { checkUser } from '../../store/reducers/userLoggedReducer';
 import { useHistory } from 'react-router-dom';
@@ -24,6 +25,7 @@ const NavBar = () => {
     // CLEAR PREVIOUS USER DETAILS
     dispatch(checkUser(null));
     dispatch(clearUserDetails());
+    dispatch(clearOrders());
 
     // DISPATCH ALERTS
     dispatch(

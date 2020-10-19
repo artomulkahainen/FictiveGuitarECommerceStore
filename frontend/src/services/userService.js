@@ -7,6 +7,10 @@ const setToken = (newToken) => {
   newToken ? (token = `bearer ${newToken}`) : (token = null);
 };
 
+const getToken = () => {
+  return token;
+};
+
 const getUserDetails = async () => {
   if (token) {
     try {
@@ -90,7 +94,7 @@ const changePassword = async (passwordObject) => {
 
 export default {
   setToken,
-  token,
+  getToken,
   getUserDetails,
   modifyUserDetails,
   createUser,

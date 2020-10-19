@@ -10,6 +10,7 @@ import { loginUser } from '../../store/reducers/userLoggedReducer';
 import { getUserDetails } from '../../store/reducers/userDetailsReducer';
 import Button from '../Button/Button';
 import { setAlert, removeAlert } from '../../store/reducers/alertReducer';
+import { initOrders } from '../../store/reducers/userOrdersReducer';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -33,8 +34,11 @@ const Login = () => {
       // DISPATCH USER LOGIN
       dispatch(loginUser(user));
 
-      // DISPATCH USER DETAILS
+      // DISPATCH USER'S DETAILS
       dispatch(getUserDetails());
+
+      // DISPATCH USER'S ORDERS
+      dispatch(initOrders());
 
       // DISPATCH ALERTS
       dispatch(
