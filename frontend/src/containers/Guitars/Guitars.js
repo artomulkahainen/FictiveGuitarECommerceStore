@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import lp from '../../assets/img/lespaul.jpg';
 import moran from '../../assets/img/moran.jpg';
@@ -10,6 +10,8 @@ import Item from '../../components/Item/Item';
 import Button from '../../components/Button/Button';
 import uniqid from 'uniqid';
 import Spinner from '../../components/SpinnerItem/SpinnerItem';
+import { addItem } from '../../store/reducers/cartReducer';
+import { removeAlert, setAlert } from '../../store/reducers/alertReducer';
 
 const Guitars = () => {
   const history = useHistory();
@@ -22,6 +24,7 @@ const Guitars = () => {
   };
 
   const guitarData = useSelector(({ guitars }) => guitars);
+  const dispatch = useDispatch();
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -33,7 +36,24 @@ const Guitars = () => {
               item={guitar.title}
               img={images[guitar.title.toLowerCase()]}
               price={guitar.price.toFixed(2) + '€'}
-              click={() => console.log('This guitar is', guitar.title)}
+              click={() => {
+                dispatch(
+                  addItem({
+                    id: guitar.id,
+                    title: guitar.title,
+                    price: guitar.price.toFixed(2),
+                  })
+                );
+                dispatch(
+                  setAlert({
+                    type: 'success',
+                    message: `${guitar.title} was added to cart!`,
+                  })
+                );
+                setTimeout(() => {
+                  dispatch(removeAlert());
+                }, 5000);
+              }}
             />
           ))
         ) : (
@@ -43,8 +63,8 @@ const Guitars = () => {
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Button
           variant='dark'
-          text='CHECKOUT'
-          click={() => history.push('/checkout')}
+          text='GO TO CART'
+          click={() => history.push('/cart')}
         />
       </div>
     </div>

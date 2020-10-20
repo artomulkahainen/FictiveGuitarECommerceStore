@@ -13,9 +13,9 @@ const Account = () => {
   const detailsRef = useRef();
   const passwordRef = useRef();
 
-  const changePasswordHandler = (event) => {
+  /*const changePasswordHandler = (event) => {
     event.preventDefault();
-  };
+  };*/
 
   return (
     <div
@@ -62,7 +62,7 @@ const Account = () => {
           otherComponents={[detailsRef, ordersRef]}
           ref={passwordRef}>
           <ChangePassword
-            handler={changePasswordHandler}
+            /*handler={changePasswordHandler}*/
             componentToggle={passwordRef}
           />
         </Togglable>

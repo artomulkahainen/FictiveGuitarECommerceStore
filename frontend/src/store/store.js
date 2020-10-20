@@ -7,7 +7,7 @@ import userLoggedReducer from './reducers/userLoggedReducer';
 import userDetailsReducer from './reducers/userDetailsReducer';
 import alertReducer from './reducers/alertReducer';
 import userOrdersReducer from './reducers/userOrdersReducer';
-//import cartReducer from './reducers/cartReducer';
+import cartReducer from './reducers/cartReducer';
 
 const reducer = combineReducers({
   guitars: guitarReducer,
@@ -15,6 +15,7 @@ const reducer = combineReducers({
   userDetails: userDetailsReducer,
   userOrders: userOrdersReducer,
   alert: alertReducer,
+  cart: cartReducer,
 });
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
