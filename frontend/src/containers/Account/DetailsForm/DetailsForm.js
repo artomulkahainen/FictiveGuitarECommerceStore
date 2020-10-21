@@ -8,6 +8,7 @@ import { updateUserDetails } from '../../../store/actions/userDetailsActions';
 import { setAlert, removeAlert } from '../../../store/actions/alertActions';
 import * as yup from 'yup';
 import { Formik } from 'formik';
+import uniqid from 'uniqid';
 
 const DetailsForm = ({ data, componentToggle }) => {
   const dispatch = useDispatch();
@@ -40,19 +41,20 @@ const DetailsForm = ({ data, componentToggle }) => {
 
     // PUT MODIFIED DETAILS INTO MONGODB
     const res = await userService.modifyUserDetails(newObject);
-
+    const alertId = uniqid();
     // IF PUT WAS SUCCESSFUL:
     if (!res.error) {
       // DISPATCH SUCCESS ALERTS
       dispatch(updateUserDetails(newObject));
       dispatch(
         setAlert({
+          id: alertId,
           type: 'success',
           message: 'User details modified successfully!',
         })
       );
       setTimeout(() => {
-        dispatch(removeAlert());
+        dispatch(removeAlert(alertId));
       }, 5000);
 
       // HIDE COMPONENT
@@ -62,6 +64,7 @@ const DetailsForm = ({ data, componentToggle }) => {
     } else {
       dispatch(
         setAlert({
+          id: alertId,
           type: 'danger',
           message:
             res.error.codeName === 'DuplicateKey'
@@ -70,7 +73,7 @@ const DetailsForm = ({ data, componentToggle }) => {
         })
       );
       setTimeout(() => {
-        dispatch(removeAlert());
+        dispatch(removeAlert(alertId));
       }, 5000);
     }
   };

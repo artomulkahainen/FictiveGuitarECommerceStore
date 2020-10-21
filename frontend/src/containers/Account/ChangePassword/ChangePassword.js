@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import Button from '../../../components/Button/Button';
 import { useDispatch } from 'react-redux';
 import userService from '../../../services/userService';
+import uniqid from 'uniqid';
 
 const ChangePassword = ({ componentToggle }) => {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ const ChangePassword = ({ componentToggle }) => {
 
   const passwordChangeHandler = async (values) => {
     // CHECK THAT NEW PASSWORDS MATCH
+    const alertId = uniqid();
     if (values.newPassword === values.newPasswordAgain) {
       const newPasswordObject = {
         oldPassword: values.oldPassword,
@@ -38,12 +40,13 @@ const ChangePassword = ({ componentToggle }) => {
         // DISPATCH SUCCESS ALERTS
         dispatch(
           setAlert({
+            id: alertId,
             type: 'success',
             message: `Successfully changed password!`,
           })
         );
         setTimeout(() => {
-          dispatch(removeAlert());
+          dispatch(removeAlert(alertId));
         }, 5000);
 
         // HIDE COMPONENT
@@ -54,12 +57,13 @@ const ChangePassword = ({ componentToggle }) => {
       } else {
         dispatch(
           setAlert({
+            id: alertId,
             type: 'danger',
             message: `${res.error}`,
           })
         );
         setTimeout(() => {
-          dispatch(removeAlert());
+          dispatch(removeAlert(alertId));
         }, 5000);
       }
 
@@ -67,12 +71,13 @@ const ChangePassword = ({ componentToggle }) => {
     } else {
       dispatch(
         setAlert({
+          id: alertId,
           type: 'danger',
           message: `The new passwords doesn't match!`,
         })
       );
       setTimeout(() => {
-        dispatch(removeAlert());
+        dispatch(removeAlert(alertId));
       }, 5000);
     }
   };

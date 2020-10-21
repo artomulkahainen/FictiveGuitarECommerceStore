@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import uniqid from 'uniqid';
 
 const CreateAccount = () => {
   const dispatch = useDispatch();
@@ -50,38 +51,41 @@ const CreateAccount = () => {
 
     // POST USER TO MONGODB
     const res = await userService.createUser(userObject);
-
+    const alertId = uniqid();
     // IF CREATE USER FAILED, DISPATCH ALERTS
     if (res.error) {
       if (res.error.username) {
         dispatch(
           setAlert({
+            id: alertId,
             type: 'danger',
             message: `${res.error.username.message}`,
           })
         );
         setTimeout(() => {
-          dispatch(removeAlert());
+          dispatch(removeAlert(alertId));
         }, 5000);
       } else if (res.error.email) {
         dispatch(
           setAlert({
+            id: alertId,
             type: 'danger',
             message: `${res.error.email.message}`,
           })
         );
         setTimeout(() => {
-          dispatch(removeAlert());
+          dispatch(removeAlert(alertId));
         }, 5000);
       } else {
         dispatch(
           setAlert({
+            id: alertId,
             type: 'danger',
             message: 'error occured',
           })
         );
         setTimeout(() => {
-          dispatch(removeAlert());
+          dispatch(removeAlert(alertId));
         }, 5000);
       }
 
@@ -90,12 +94,13 @@ const CreateAccount = () => {
       // DISPATCH SUCCESS ALERTS
       dispatch(
         setAlert({
+          id: alertId,
           type: 'success',
           message: `Successfully created new user: ${res.username}. Please log in to use the service.`,
         })
       );
       setTimeout(() => {
-        dispatch(removeAlert());
+        dispatch(removeAlert(alertId));
       }, 5000);
 
       // CHANGE CURRENT PAGE BACK TO HOME

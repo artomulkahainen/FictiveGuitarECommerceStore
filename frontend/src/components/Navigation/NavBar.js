@@ -9,6 +9,7 @@ import { clearOrders } from '../../store/actions/userOrdersActions';
 import { setAlert, removeAlert } from '../../store/actions/alertActions';
 import { checkUser } from '../../store/actions/userLoggedActions';
 import { useHistory } from 'react-router-dom';
+import uniqid from 'uniqid';
 
 const NavBar = () => {
   const user = useSelector(({ userLogged }) => userLogged);
@@ -28,11 +29,16 @@ const NavBar = () => {
     dispatch(clearOrders());
 
     // DISPATCH ALERTS
+    const alertId = uniqid();
     dispatch(
-      setAlert({ type: 'success', message: 'Successfully logged out.' })
+      setAlert({
+        id: alertId,
+        type: 'success',
+        message: 'Successfully logged out.',
+      })
     );
     setTimeout(() => {
-      dispatch(removeAlert());
+      dispatch(removeAlert(alertId));
     }, 5000);
 
     // REDIRECT TO HOME PAGE

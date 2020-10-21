@@ -36,7 +36,16 @@ const App = () => {
       {!alertMessage ? (
         <br />
       ) : (
-        <Alert type={alertMessage.type} message={alertMessage.message} />
+        <Alert
+          type={
+            alertMessage[0] ? alertMessage[alertMessage.length - 1].type : null
+          }
+          message={
+            alertMessage[0]
+              ? alertMessage[alertMessage.length - 1].message
+              : null
+          }
+        />
       )}
       <Routes />
     </div>

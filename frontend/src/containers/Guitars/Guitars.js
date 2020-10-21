@@ -24,6 +24,7 @@ const Guitars = () => {
   };
 
   const guitarData = useSelector(({ guitars }) => guitars);
+
   const dispatch = useDispatch();
 
   return (
@@ -44,15 +45,17 @@ const Guitars = () => {
                     price: guitar.price.toFixed(2),
                   })
                 );
+                const alertId = uniqid();
                 dispatch(
                   setAlert({
+                    id: alertId,
                     type: 'success',
                     message: `${guitar.title} was added to cart!`,
                   })
                 );
                 setTimeout(() => {
-                  dispatch(removeAlert());
-                }, 5000);
+                  dispatch(removeAlert(alertId));
+                }, 3000);
               }}
             />
           ))

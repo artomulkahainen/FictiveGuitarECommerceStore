@@ -2,6 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 
 const cartReducer = (state = [], action) => {
   switch (action.type) {
+    // ADD ITEM
     case actionTypes.ADD_ITEM:
       let findSimilarObject = state.find((el) => el.id === action.data.id);
       if (!findSimilarObject) {
@@ -17,28 +18,30 @@ const cartReducer = (state = [], action) => {
           item.id !== action.data.id ? item : changedObject
         );
       }
+
+    // DELETE ITEM
     case actionTypes.DELETE_ITEM:
-      let deleteItemState = state;
-      let findSameObject = deleteItemState.find(
-        (el) => action.data.id === el.id
-      );
-      if (findSameObject.quantity > 1) {
-        findSameObject.quantity--;
-        return deleteItemState;
-      } else {
-        deleteItemState = deleteItemState.filter(
-          (el) => el.id !== action.data.id
+      const findItem = state.find((el) => action.data.id === el.id);
+      if (findItem.quantity > 1) {
+        const changedObject = {
+          ...findItem,
+          quantity: findItem.quantity - 1,
+        };
+        return state.map((el) =>
+          el.id !== action.data.id ? el : changedObject
         );
+      } else {
+        return state.filter((el) => el.id !== action.data.id);
       }
-      return deleteItemState;
+
+    // REMOVE ITEM COMPLETELY
     case actionTypes.REMOVE_ITEM_COMPLETELY:
-      let itemRemoveState = state;
-      itemRemoveState = itemRemoveState.filter(
-        (el) => el.id !== action.data.id
-      );
-      return itemRemoveState;
+      return state.filter((el) => el.id !== action.data.id);
+
+    // CLEAR CART
     case actionTypes.CLEAR_CART:
       return [];
+
     default:
       return state;
   }

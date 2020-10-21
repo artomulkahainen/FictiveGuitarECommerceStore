@@ -11,6 +11,7 @@ import { getUserDetails } from '../../store/actions/userDetailsActions';
 import Button from '../Button/Button';
 import { setAlert, removeAlert } from '../../store/actions/alertActions';
 import { initOrders } from '../../store/actions/userOrdersActions';
+import uniqid from 'uniqid';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const Login = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
+    const alertId = uniqid();
     try {
       // LOGIN USER WITH LOGIN SERVICE
       const user = await loginService.login({
@@ -42,10 +44,14 @@ const Login = () => {
 
       // DISPATCH ALERTS
       dispatch(
-        setAlert({ type: 'success', message: `Welcome ${username.value}!` })
+        setAlert({
+          id: alertId,
+          type: 'success',
+          message: `Welcome ${username.value}!`,
+        })
       );
       setTimeout(() => {
-        dispatch(removeAlert());
+        dispatch(removeAlert(alertId));
       }, 5000);
 
       // CLEAR FIELDS
@@ -58,12 +64,13 @@ const Login = () => {
       // DISPATCH ALERTS
       dispatch(
         setAlert({
+          id: alertId,
           type: 'danger',
           message: `Username or password invalid. Did you write your credentials correctly?`,
         })
       );
       setTimeout(() => {
-        dispatch(removeAlert());
+        dispatch(removeAlert(alertId));
       }, 5000);
     }
   };
