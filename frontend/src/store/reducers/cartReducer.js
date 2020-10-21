@@ -1,30 +1,40 @@
 const cartReducer = (state = [], action) => {
   switch (action.type) {
     case 'ADD_ITEM':
-      const newState = state;
-      const findSimilarObject = newState.find((el) => el.id === action.data.id);
+      let findSimilarObject = state.find((el) => el.id === action.data.id);
       if (!findSimilarObject) {
         let newObject = action.data;
         newObject.quantity = 1;
-        newState.push(newObject);
+        return state.concat(newObject);
       } else {
-        findSimilarObject.quantity += 1;
+        const changedObject = {
+          ...findSimilarObject,
+          quantity: findSimilarObject.quantity + 1,
+        };
+        return state.map((item) =>
+          item.id !== action.data.id ? item : changedObject
+        );
       }
-      return newState;
     case 'DELETE_ITEM':
-      const newState2 = state;
-      const findSameObject = newState2.find((el) => action.data.id === el.id);
+      let deleteItemState = state;
+      let findSameObject = deleteItemState.find(
+        (el) => action.data.id === el.id
+      );
       if (findSameObject.quantity > 1) {
         findSameObject.quantity--;
-        return newState2;
+        return deleteItemState;
       } else {
-        newState2.filter((el) => el.id !== action.data.id);
+        deleteItemState = deleteItemState.filter(
+          (el) => el.id !== action.data.id
+        );
       }
-      return newState2;
+      return deleteItemState;
     case 'REMOVE_ITEM_COMPLETELY':
-      const newState3 = state;
-      newState3.filter((el) => el.id !== action.data.id);
-      return newState3;
+      let itemRemoveState = state;
+      itemRemoveState = itemRemoveState.filter(
+        (el) => el.id !== action.data.id
+      );
+      return itemRemoveState;
     case 'CLEAR_CART':
       return [];
     default:
