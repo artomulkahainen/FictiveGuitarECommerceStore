@@ -4,8 +4,8 @@ import Spinner from '../../../components/SpinnerItem/SpinnerItem';
 import { useDispatch } from 'react-redux';
 import Button from '../../../components/Button/Button';
 import userService from '../../../services/userService';
-import { updateUserDetails } from '../../../store/reducers/userDetailsReducer';
-import { setAlert, removeAlert } from '../../../store/reducers/alertReducer';
+import { updateUserDetails } from '../../../store/actions/userDetailsActions';
+import { setAlert, removeAlert } from '../../../store/actions/alertActions';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 

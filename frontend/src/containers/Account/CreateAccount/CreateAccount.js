@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Col } from 'react-bootstrap';
 import Button from '../../../components/Button/Button';
 import userService from '../../../services/userService';
-import { setAlert, removeAlert } from '../../../store/reducers/alertReducer';
+import { setAlert, removeAlert } from '../../../store/actions/alertActions';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';

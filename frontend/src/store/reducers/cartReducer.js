@@ -1,6 +1,8 @@
+import * as actionTypes from '../actions/actionTypes';
+
 const cartReducer = (state = [], action) => {
   switch (action.type) {
-    case 'ADD_ITEM':
+    case actionTypes.ADD_ITEM:
       let findSimilarObject = state.find((el) => el.id === action.data.id);
       if (!findSimilarObject) {
         let newObject = action.data;
@@ -15,7 +17,7 @@ const cartReducer = (state = [], action) => {
           item.id !== action.data.id ? item : changedObject
         );
       }
-    case 'DELETE_ITEM':
+    case actionTypes.DELETE_ITEM:
       let deleteItemState = state;
       let findSameObject = deleteItemState.find(
         (el) => action.data.id === el.id
@@ -29,41 +31,17 @@ const cartReducer = (state = [], action) => {
         );
       }
       return deleteItemState;
-    case 'REMOVE_ITEM_COMPLETELY':
+    case actionTypes.REMOVE_ITEM_COMPLETELY:
       let itemRemoveState = state;
       itemRemoveState = itemRemoveState.filter(
         (el) => el.id !== action.data.id
       );
       return itemRemoveState;
-    case 'CLEAR_CART':
+    case actionTypes.CLEAR_CART:
       return [];
     default:
       return state;
   }
-};
-
-export const addItem = (item) => {
-  return (dispatch) => {
-    dispatch({ type: 'ADD_ITEM', data: item });
-  };
-};
-
-export const deleteItem = (item) => {
-  return (dispatch) => {
-    dispatch({ type: 'DELETE_ITEM', data: item });
-  };
-};
-
-export const removeItemCompletely = (item) => {
-  return (dispatch) => {
-    dispatch({ type: 'REMOVE_ITEM_COMPLETELY', data: item });
-  };
-};
-
-export const clearCart = () => {
-  return (dispatch) => {
-    dispatch({ type: 'CLEAR_CART' });
-  };
 };
 
 export default cartReducer;

@@ -6,11 +6,11 @@ import classes from './Login.module.css';
 import LoginForm from './LoginForm/LoginForm';
 import loginService from '../../services/loginService';
 import userService from '../../services/userService';
-import { loginUser } from '../../store/reducers/userLoggedReducer';
-import { getUserDetails } from '../../store/reducers/userDetailsReducer';
+import { loginUser } from '../../store/actions/userLoggedActions';
+import { getUserDetails } from '../../store/actions/userDetailsActions';
 import Button from '../Button/Button';
-import { setAlert, removeAlert } from '../../store/reducers/alertReducer';
-import { initOrders } from '../../store/reducers/userOrdersReducer';
+import { setAlert, removeAlert } from '../../store/actions/alertActions';
+import { initOrders } from '../../store/actions/userOrdersActions';
 
 const Login = () => {
   const dispatch = useDispatch();

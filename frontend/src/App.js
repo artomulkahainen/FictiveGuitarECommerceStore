@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import NavBar from './components/Navigation/NavBar';
 import Routes from './routes/Routes';
-import { initGuitars } from './store/reducers/guitarReducer';
-import { checkUser } from './store/reducers/userLoggedReducer';
+import { initGuitars } from './store/actions/guitarActions';
+import { checkUser } from './store/actions/userLoggedActions';
 import userService from './services/userService';
-import { getUserDetails } from './store/reducers/userDetailsReducer';
-import { initOrders } from './store/reducers/userOrdersReducer';
+import { getUserDetails } from './store/actions/userDetailsActions';
+import { initOrders } from './store/actions/userOrdersActions';
 import Alert from './components/Alerts/Alerts';
 
 const App = () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import { Formik } from 'formik';
-import { setAlert, removeAlert } from '../../../store/reducers/alertReducer';
+import { setAlert, removeAlert } from '../../../store/actions/alertActions';
 import * as yup from 'yup';
 import Button from '../../../components/Button/Button';
 import { useDispatch } from 'react-redux';

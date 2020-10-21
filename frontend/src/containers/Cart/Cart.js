@@ -7,7 +7,7 @@ import {
   addItem,
   deleteItem,
   removeItemCompletely,
-} from '../../store/reducers/cartReducer';
+} from '../../store/actions/cartActions';
 
 const Cart = () => {
   const dispatch = useDispatch();

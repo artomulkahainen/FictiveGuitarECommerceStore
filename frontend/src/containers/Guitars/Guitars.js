@@ -10,8 +10,8 @@ import Item from '../../components/Item/Item';
 import Button from '../../components/Button/Button';
 import uniqid from 'uniqid';
 import Spinner from '../../components/SpinnerItem/SpinnerItem';
-import { addItem } from '../../store/reducers/cartReducer';
-import { removeAlert, setAlert } from '../../store/reducers/alertReducer';
+import { addItem } from '../../store/actions/cartActions';
+import { removeAlert, setAlert } from '../../store/actions/alertActions';
 
 const Guitars = () => {
   const history = useHistory();

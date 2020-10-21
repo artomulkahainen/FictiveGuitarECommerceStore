@@ -4,10 +4,10 @@ import img from '../../assets/img/acousticguitar.jpg';
 import NavLink from './NavLink/NavLink';
 import { useSelector, useDispatch } from 'react-redux';
 import userService from '../../services/userService';
-import { clearUserDetails } from '../../store/reducers/userDetailsReducer';
-import { clearOrders } from '../../store/reducers/userOrdersReducer';
-import { setAlert, removeAlert } from '../../store/reducers/alertReducer';
-import { checkUser } from '../../store/reducers/userLoggedReducer';
+import { clearUserDetails } from '../../store/actions/userDetailsActions';
+import { clearOrders } from '../../store/actions/userOrdersActions';
+import { setAlert, removeAlert } from '../../store/actions/alertActions';
+import { checkUser } from '../../store/actions/userLoggedActions';
 import { useHistory } from 'react-router-dom';
 
 const NavBar = () => {
