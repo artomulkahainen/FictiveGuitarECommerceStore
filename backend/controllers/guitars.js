@@ -13,20 +13,4 @@ guitarsRouter.get('/:id', async (req, res) => {
   guitar ? res.json(guitar.toJSON()) : res.status(404).end();
 });
 
-// PUT -METHOD
-guitarsRouter.put('/:id', async (req, res, next) => {
-  const body = req.body;
-
-  const guitar = {
-    title: body.title,
-    price: body.price,
-  };
-
-  await Guitar.findByIdAndUpdate(req.params.id, guitar, { new: true })
-    .then((updatedGuitar) => {
-      res.json(updatedGuitar.toJSON());
-    })
-    .catch((error) => next(error));
-});
-
 module.exports = guitarsRouter;

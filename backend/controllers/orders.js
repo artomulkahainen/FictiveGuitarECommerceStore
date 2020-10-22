@@ -39,7 +39,7 @@ ordersRouter.get(
   }
 );
 
-// POST -METHODS
+// POST -METHODS (add sanitizers)
 ordersRouter.post(
   '/',
   [
