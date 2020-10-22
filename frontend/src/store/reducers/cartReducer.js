@@ -47,4 +47,6 @@ const cartReducer = (state = [], action) => {
   }
 };
 
+const updateTotalPrice = (oldValue, price) => oldValue - price;
+
 export default cartReducer;

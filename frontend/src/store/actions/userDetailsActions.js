@@ -1,7 +1,7 @@
 import * as actionTypes from './actionTypes';
 import userService from '../../services/userService';
 
-export const getUserDetails = () => {
+export const initUserDetails = () => {
   return async (dispatch) => {
     const details = await userService.getUserDetails();
     dispatch({ type: actionTypes.INIT_USER_DETAILS, data: details });

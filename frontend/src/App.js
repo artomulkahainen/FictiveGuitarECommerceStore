@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import NavBar from './components/Navigation/NavBar';
 import Routes from './routes/Routes';
 import { initGuitars } from './store/actions/guitarActions';
-import { checkUser } from './store/actions/userLoggedActions';
+import { loginUser } from './store/actions/userLoggedActions';
 import userService from './services/userService';
-import { getUserDetails } from './store/actions/userDetailsActions';
+import { initUserDetails } from './store/actions/userDetailsActions';
 import { initOrders } from './store/actions/userOrdersActions';
 import Alert from './components/Alerts/Alerts';
 
@@ -19,8 +19,8 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
       userService.setToken(user.token);
-      dispatch(checkUser(user));
-      dispatch(getUserDetails());
+      dispatch(loginUser(user));
+      dispatch(initUserDetails());
       dispatch(initOrders());
     }
   }, [dispatch]);
@@ -33,18 +33,12 @@ const App = () => {
   return (
     <div className='container'>
       <NavBar />
-      {!alertMessage ? (
+      {!alertMessage[0] ? (
         <br />
       ) : (
         <Alert
-          type={
-            alertMessage[0] ? alertMessage[alertMessage.length - 1].type : null
-          }
-          message={
-            alertMessage[0]
-              ? alertMessage[alertMessage.length - 1].message
-              : null
-          }
+          type={alertMessage[alertMessage.length - 1].type}
+          message={alertMessage[alertMessage.length - 1].message}
         />
       )}
       <Routes />

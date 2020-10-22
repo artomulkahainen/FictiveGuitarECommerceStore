@@ -3,7 +3,7 @@ import * as actionTypes from '../actions/actionTypes';
 const userOrdersReducer = (state = null, action) => {
   switch (action.type) {
     case actionTypes.INIT_ORDERS:
-      if (action.data && action.data.length !== 0) {
+      if (action.data.length > 0) {
         return action.data;
       }
       return null;

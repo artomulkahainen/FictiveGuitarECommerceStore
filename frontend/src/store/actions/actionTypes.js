@@ -13,7 +13,7 @@ export const UPDATE_USER_DETAILS = 'UPDATE_USER_DETAILS';
 export const CLEAR_USER_DETAILS = 'CLEAR_USER_DETAILS';
 
 export const LOGIN_USER = 'LOGIN_USER';
-export const CHECK_USER = 'CHECK_USER';
+export const LOGOUT_USER = 'LOGOUT_USER';
 
 export const INIT_ORDERS = 'INIT_ORDERS';
 export const CLEAR_ORDERS = 'CLEAR_ORDERS';

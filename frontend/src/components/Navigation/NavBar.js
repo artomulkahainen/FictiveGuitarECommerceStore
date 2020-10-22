@@ -7,7 +7,7 @@ import userService from '../../services/userService';
 import { clearUserDetails } from '../../store/actions/userDetailsActions';
 import { clearOrders } from '../../store/actions/userOrdersActions';
 import { setAlert, removeAlert } from '../../store/actions/alertActions';
-import { checkUser } from '../../store/actions/userLoggedActions';
+import { logoutUser } from '../../store/actions/userLoggedActions';
 import { useHistory } from 'react-router-dom';
 import uniqid from 'uniqid';
 
@@ -24,7 +24,7 @@ const NavBar = () => {
     userService.setToken(null);
 
     // CLEAR PREVIOUS USER DETAILS
-    dispatch(checkUser(null));
+    dispatch(logoutUser());
     dispatch(clearUserDetails());
     dispatch(clearOrders());
 

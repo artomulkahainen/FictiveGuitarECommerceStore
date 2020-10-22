@@ -7,7 +7,7 @@ import LoginForm from './LoginForm/LoginForm';
 import loginService from '../../services/loginService';
 import userService from '../../services/userService';
 import { loginUser } from '../../store/actions/userLoggedActions';
-import { getUserDetails } from '../../store/actions/userDetailsActions';
+import { initUserDetails } from '../../store/actions/userDetailsActions';
 import Button from '../Button/Button';
 import { setAlert, removeAlert } from '../../store/actions/alertActions';
 import { initOrders } from '../../store/actions/userOrdersActions';
@@ -37,7 +37,7 @@ const Login = () => {
       dispatch(loginUser(user));
 
       // DISPATCH USER'S DETAILS
-      dispatch(getUserDetails());
+      dispatch(initUserDetails());
 
       // DISPATCH USER'S ORDERS
       dispatch(initOrders());
