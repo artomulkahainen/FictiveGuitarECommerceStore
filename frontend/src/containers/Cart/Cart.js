@@ -20,7 +20,7 @@ const Cart = () => {
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-      {cartData.length !== 0 ? (
+      {cartData.selectedItems.length !== 0 ? (
         <Table striped bordered hover style={{ width: '40%' }}>
           <thead>
             <tr>
@@ -29,7 +29,7 @@ const Cart = () => {
             </tr>
           </thead>
           <tbody>
-            {cartData.map((el) => (
+            {cartData.selectedItems.map((el) => (
               <tr key={uniqid()}>
                 <th>{el.title}</th>
                 <th style={{ width: '10%' }}>
@@ -41,19 +41,43 @@ const Cart = () => {
                         color: 'green',
                         cursor: 'pointer',
                       }}
-                      onClick={() => dispatch(addItem(el))}
+                      onClick={() =>
+                        dispatch(
+                          addItem({
+                            id: el.id,
+                            title: el.title,
+                            price: el.price,
+                          })
+                        )
+                      }
                     />
                   }
                   {
                     <MdRemove
                       style={{ color: 'red', cursor: 'pointer' }}
-                      onClick={() => dispatch(deleteItem(el))}
+                      onClick={() =>
+                        dispatch(
+                          deleteItem({
+                            id: el.id,
+                            title: el.title,
+                            price: el.price,
+                          })
+                        )
+                      }
                     />
                   }
                   {
                     <MdDelete
                       style={{ marginLeft: '3px', cursor: 'pointer' }}
-                      onClick={() => dispatch(removeItemCompletely(el))}
+                      onClick={() =>
+                        dispatch(
+                          removeItemCompletely({
+                            id: el.id,
+                            title: el.title,
+                            price: el.price,
+                          })
+                        )
+                      }
                     />
                   }
                 </th>

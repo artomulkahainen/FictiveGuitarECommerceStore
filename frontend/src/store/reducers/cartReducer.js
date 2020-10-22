@@ -1,52 +1,84 @@
 import * as actionTypes from '../actions/actionTypes';
 
-const cartReducer = (state = [], action) => {
+const cartReducer = (state = { totalPrice: 0, selectedItems: [] }, action) => {
   switch (action.type) {
     // ADD ITEM
     case actionTypes.ADD_ITEM:
-      let findSimilarObject = state.find((el) => el.id === action.data.id);
-      if (!findSimilarObject) {
+      let findSimilarItem = state.selectedItems.find(
+        (el) => el.id === action.data.id
+      );
+      if (!findSimilarItem) {
         let newObject = action.data;
         newObject.quantity = 1;
-        return state.concat(newObject);
+        return {
+          totalPrice: state.totalPrice + parseFloat(newObject.price),
+          selectedItems: [...state.selectedItems, newObject],
+        };
       } else {
         const changedObject = {
-          ...findSimilarObject,
-          quantity: findSimilarObject.quantity + 1,
+          ...findSimilarItem,
+          quantity: findSimilarItem.quantity + 1,
         };
-        return state.map((item) =>
-          item.id !== action.data.id ? item : changedObject
-        );
+        return {
+          totalPrice: state.totalPrice + parseFloat(action.data.price),
+          selectedItems: state.selectedItems.map((item) =>
+            item.id !== action.data.id ? item : changedObject
+          ),
+        };
       }
 
     // DELETE ITEM
     case actionTypes.DELETE_ITEM:
-      const findItem = state.find((el) => action.data.id === el.id);
+      const findItem = state.selectedItems.find(
+        (el) => action.data.id === el.id
+      );
       if (findItem.quantity > 1) {
         const changedObject = {
           ...findItem,
           quantity: findItem.quantity - 1,
         };
-        return state.map((el) =>
-          el.id !== action.data.id ? el : changedObject
-        );
+        return {
+          totalPrice: state.totalPrice - parseFloat(action.data.price),
+          selectedItems: state.selectedItems.map((el) =>
+            el.id !== action.data.id ? el : changedObject
+          ),
+        };
       } else {
-        return state.filter((el) => el.id !== action.data.id);
+        return {
+          totalPrice:
+            state.selectedItems.length === 1
+              ? 0
+              : state.totalPrice - parseFloat(action.data.price),
+          selectedItems: state.selectedItems.filter(
+            (el) => el.id !== action.data.id
+          ),
+        };
       }
 
     // REMOVE ITEM COMPLETELY
     case actionTypes.REMOVE_ITEM_COMPLETELY:
-      return state.filter((el) => el.id !== action.data.id);
+      return {
+        totalPrice:
+          state.selectedItems.length === 1
+            ? 0
+            : state.totalPrice -
+              parseFloat(
+                action.data.price *
+                  state.selectedItems.find((el) => el.id === action.data.id)
+                    .quantity
+              ),
+        selectedItems: state.selectedItems.filter(
+          (el) => el.id !== action.data.id
+        ),
+      };
 
     // CLEAR CART
     case actionTypes.CLEAR_CART:
-      return [];
+      return { totalPrice: 0, selectedItems: [] };
 
     default:
       return state;
   }
 };
-
-const updateTotalPrice = (oldValue, price) => oldValue - price;
 
 export default cartReducer;

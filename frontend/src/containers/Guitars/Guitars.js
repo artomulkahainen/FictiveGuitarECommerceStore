@@ -42,7 +42,7 @@ const Guitars = () => {
                   addItem({
                     id: guitar.id,
                     title: guitar.title,
-                    price: guitar.price.toFixed(2),
+                    price: guitar.price,
                   })
                 );
                 const alertId = uniqid();
