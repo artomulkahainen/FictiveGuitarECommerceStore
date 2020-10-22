@@ -13,5 +13,5 @@ export const updateUserDetails = (updatedObject) => {
 };
 
 export const clearUserDetails = () => {
-  return { type: actionTypes.CLEAR_USER_DETAILS, data: null };
+  return { type: actionTypes.CLEAR_USER_DETAILS };
 };
