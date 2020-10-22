@@ -7,7 +7,7 @@ const { param, body, validationResult } = require('express-validator');
 
 // GET -METHODS
 
-// GET ALL ORDERS
+// GET ALL ORDERS (only admin?)
 ordersRouter.get('/allOrders', async (req, res) => {
   const orders = await Order.find({});
   orders
@@ -29,7 +29,7 @@ ordersRouter.get('/', async (req, res) => {
     : res.status(404).end();
 });
 
-// GET ORDER BY ID
+// GET ORDER BY ID (only admin?)
 ordersRouter.get(
   '/:id',
   param('id').customSanitizer((value) => ObjectId(value)),
@@ -84,23 +84,5 @@ ordersRouter.post(
     }
   }
 );
-
-// DELETE -METHODS
-ordersRouter.delete('/:id', async (req, res, next) => {
-  const user = await User.findById(req.body.userId);
-  const newUsers = user.orders.filter(
-    (order) => order.toString() !== req.params.id
-  );
-
-  try {
-    user.orders = newUsers;
-    await user.save();
-    await Order.findByIdAndRemove(req.params.id)
-      .then((el) => res.json(`item ${el.id} deleted`))
-      .catch((error) => next(error));
-  } catch (error) {
-    res.status(400).json({ error: error });
-  }
-});
 
 module.exports = ordersRouter;

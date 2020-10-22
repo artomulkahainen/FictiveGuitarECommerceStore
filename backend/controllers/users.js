@@ -4,12 +4,13 @@ const User = require('../models/user');
 const tokenValidator = require('../utils/tokenValidator');
 const { body, validationResult } = require('express-validator');
 
-// GET -METHODS
+// GET -METHODS (only admin?)
 usersRouter.get('/', async (req, res) => {
   const users = await User.find({});
   users ? res.json(users.map((u) => u.toJSON())) : res.status(404).end();
 });
 
+// (only admin?)
 usersRouter.get('/:id', async (req, res) => {
   const user = await User.findById(req.params.id);
   user ? res.json(user.toJSON()) : res.status(404).end();
@@ -56,7 +57,7 @@ usersRouter.post(
   }
 );
 
-// DELETE -METHOD
+// DELETE -METHOD (only admin?)
 usersRouter.delete('/', async (req, res, next) => {
   const id = tokenValidator(req);
 
@@ -69,7 +70,7 @@ usersRouter.delete('/', async (req, res, next) => {
     .catch((error) => next(error));
 });
 
-// PUT -METHOD FOR CHANGING ACCOUNT DETAILS
+// PUT -METHOD FOR CHANGING ACCOUNT DETAILS (sanitizing needed)
 usersRouter.put('/', async (req, res, next) => {
   const id = tokenValidator(req);
 
@@ -91,7 +92,7 @@ usersRouter.put('/', async (req, res, next) => {
     .catch((error) => /*next(error)*/ res.json({ error: error }));
 });
 
-// PUT -METHOD FOR CHANGING PASSWORD
+// PUT -METHOD FOR CHANGING PASSWORD (sanitizing needed)
 usersRouter.put('/password', async (req, res, next) => {
   const id = tokenValidator(req);
 
