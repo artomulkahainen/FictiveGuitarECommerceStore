@@ -15,7 +15,9 @@ const Routes = () => {
   return (
     <Switch>
       <Route path='/guitars' component={Guitars} />
-      <Route path='/cart' component={Cart} />
+      <Route path='/cart'>
+        <Cart userLogged={user} />
+      </Route>
       <Route path='/login'>{user ? <Redirect to='/' /> : <Login />}</Route>
       <Route path='/account'>
         {user ? <Account /> : <Redirect to='/login' />}

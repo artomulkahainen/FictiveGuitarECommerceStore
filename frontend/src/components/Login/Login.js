@@ -2,7 +2,6 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import useField from '../../hooks/useField';
-import classes from './Login.module.css';
 import LoginForm from './LoginForm/LoginForm';
 import loginService from '../../services/loginService';
 import userService from '../../services/userService';
@@ -77,12 +76,10 @@ const Login = () => {
 
   return (
     <div
-      className={classes.Login}
       style={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        height: '1000px',
       }}>
       <LoginForm onSubmit={onSubmit} username={username} password={password} />
       <Button
