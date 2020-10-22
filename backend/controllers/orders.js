@@ -7,14 +7,6 @@ const { param, body, validationResult } = require('express-validator');
 
 // GET -METHODS
 
-// GET ALL ORDERS (only admin?)
-ordersRouter.get('/allOrders', async (req, res) => {
-  const orders = await Order.find({});
-  orders
-    ? res.json(orders.map((order) => order.toJSON()))
-    : res.status(404).end();
-});
-
 // GET USER'S OWN ORDERS
 ordersRouter.get('/', async (req, res) => {
   const id = tokenValidator(req);
@@ -28,16 +20,6 @@ ordersRouter.get('/', async (req, res) => {
     ? res.json(orders.map((order) => order.toJSON()))
     : res.status(404).end();
 });
-
-// GET ORDER BY ID (only admin?)
-ordersRouter.get(
-  '/:id',
-  param('id').customSanitizer((value) => ObjectId(value)),
-  async (req, res) => {
-    const order = await Order.findById(req.params.id);
-    order ? res.json(order.toJSON()) : res.status(404).end();
-  }
-);
 
 // POST -METHODS (add sanitizers)
 ordersRouter.post(
