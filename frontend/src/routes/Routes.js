@@ -7,7 +7,6 @@ import Login from '../components/Login/Login';
 import Account from '../containers/Account/Account';
 import CreateAccount from '../containers/Account/CreateAccount/CreateAccount';
 import Cart from '../containers/Cart/Cart';
-import Checkout from '../components/Checkout/Checkout';
 
 const Routes = () => {
   const user = useSelector(({ userLogged }) => userLogged);
@@ -21,9 +20,6 @@ const Routes = () => {
       <Route path='/login'>{user ? <Redirect to='/' /> : <Login />}</Route>
       <Route path='/account'>
         {user ? <Account /> : <Redirect to='/login' />}
-      </Route>
-      <Route path='/checkout'>
-        {user ? <Checkout /> : <Redirect to='/login' />}
       </Route>
       <Route path='/createaccount'>
         {!user ? <CreateAccount /> : <Redirect to='/' />}

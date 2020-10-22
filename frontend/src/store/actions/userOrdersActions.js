@@ -8,6 +8,10 @@ export const initOrders = () => {
   };
 };
 
+export const updateOrders = (newOrder) => {
+  return { type: 'UPDATE_ORDERS', data: newOrder };
+};
+
 export const clearOrders = () => {
   return { type: actionTypes.CLEAR_ORDERS };
 };

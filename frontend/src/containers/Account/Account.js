@@ -13,10 +13,6 @@ const Account = () => {
   const detailsRef = useRef();
   const passwordRef = useRef();
 
-  /*const changePasswordHandler = (event) => {
-    event.preventDefault();
-  };*/
-
   return (
     <div
       style={{

@@ -16,4 +16,5 @@ export const LOGIN_USER = 'LOGIN_USER';
 export const LOGOUT_USER = 'LOGOUT_USER';
 
 export const INIT_ORDERS = 'INIT_ORDERS';
+export const UPDATE_ORDERS = 'UPDATE_ORDERS';
 export const CLEAR_ORDERS = 'CLEAR_ORDERS';

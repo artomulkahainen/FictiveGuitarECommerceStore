@@ -5,7 +5,7 @@ import uniqid from 'uniqid';
 const OrdersSummary = ({ data, guitarData }) => {
   return (
     <div>
-      {data ? (
+      {data.length > 0 ? (
         <Table striped bordered hover>
           <thead>
             <tr>
