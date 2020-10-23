@@ -1,3 +1,5 @@
 - fix buttons on small screens
-- Order summary is not implemented yet
-- Cart component is not implemented yet
+- try implementing better responsive design
+- create delete account component
+- create end to end tests
+- create react tests
