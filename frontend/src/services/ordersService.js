@@ -2,7 +2,7 @@ import axios from 'axios';
 import userService from './userService';
 const baseUrl = 'http://localhost:3001/api/orders';
 
-const getUserOrders = async () => {
+const getUserOrders = () => {
   const token = userService.getToken();
 
   if (token) {
@@ -10,7 +10,7 @@ const getUserOrders = async () => {
       headers: { Authorization: token },
     };
 
-    const res = await axios
+    const res = axios
       .get(baseUrl, options)
       .then((response) => response.data)
       .catch((error) => error.response.data);
@@ -20,7 +20,7 @@ const getUserOrders = async () => {
   return null;
 };
 
-const postOrder = async (order) => {
+const postOrder = (order) => {
   const token = userService.getToken();
 
   if (token) {
@@ -30,7 +30,7 @@ const postOrder = async (order) => {
       },
     };
 
-    const res = await axios
+    const res = axios
       .post(baseUrl, order, options)
       .then((response) => response.data)
       .catch((error) => error.response.data);

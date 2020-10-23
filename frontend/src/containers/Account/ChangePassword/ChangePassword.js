@@ -73,7 +73,7 @@ const ChangePassword = ({ componentToggle }) => {
         setAlert({
           id: alertId,
           type: 'danger',
-          message: `The new passwords doesn't match!`,
+          message: `The new passwords don't match!`,
         })
       );
       setTimeout(() => {
