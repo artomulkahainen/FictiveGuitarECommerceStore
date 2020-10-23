@@ -4,20 +4,13 @@ const User = require('../models/user');
 const tokenValidator = require('../utils/tokenValidator');
 const { body, validationResult } = require('express-validator');
 
-// GET -METHODS (only admin?)
-usersRouter.get('/', async (req, res) => {
-  const users = await User.find({});
-  users ? res.json(users.map((u) => u.toJSON())) : res.status(404).end();
-});
-
-// (only admin?)
+// GET OWN DETAILS (protect and sanitize the route)
 usersRouter.get('/:id', async (req, res) => {
   const user = await User.findById(req.params.id);
   user ? res.json(user.toJSON()) : res.status(404).end();
 });
 
-// POST -METHOD
-
+// CREATE USER (protect the route and finish sanitizing)
 usersRouter.post(
   '/',
   [
@@ -57,7 +50,7 @@ usersRouter.post(
   }
 );
 
-// DELETE -METHOD (only admin?)
+// DELETE -METHOD
 usersRouter.delete('/', async (req, res, next) => {
   const id = tokenValidator(req);
 

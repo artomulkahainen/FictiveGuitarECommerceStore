@@ -5,8 +5,6 @@ const Guitar = require('../models/guitar');
 const tokenValidator = require('../utils/tokenValidator');
 const { param, body, validationResult } = require('express-validator');
 
-// GET -METHODS
-
 // GET USER'S OWN ORDERS
 ordersRouter.get('/', async (req, res) => {
   const id = tokenValidator(req);
@@ -21,7 +19,7 @@ ordersRouter.get('/', async (req, res) => {
     : res.status(404).end();
 });
 
-// POST -METHODS (add sanitizers)
+// POST A NEW ORDER (add sanitizers)
 ordersRouter.post(
   '/',
   [
