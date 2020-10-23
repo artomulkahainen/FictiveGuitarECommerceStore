@@ -27,7 +27,8 @@ const CreateAccount = () => {
     password: yup
       .string()
       .required('Password is required!')
-      .min(5, 'Password must be at least 5 characters long!'),
+      .min(5, 'Password must be at least 5 characters long!')
+      .max(30, 'Password too long!'),
     email: yup
       .string()
       .email('Please insert correct email address! (eg. your_name@gmail.com)')
