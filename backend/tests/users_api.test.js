@@ -7,10 +7,10 @@ const User = require('../models/user');
 
 describe('GET -methods', () => {
   beforeEach(async () => {
-    await User.deleteOne({ username: 'marko' });
+    await User.deleteOne({ username: 'testi' });
     const user = new User({
-      username: 'marko',
-      passwordHash: 'marko123',
+      username: 'testi',
+      passwordHash: 'testi',
       email: 'markoboi@gmail.com',
       details: {
         name: 'Marko Hirvimies',
@@ -23,15 +23,8 @@ describe('GET -methods', () => {
     await user.save();
   });
 
-  test('users are returned as json', async () => {
-    await api
-      .get('/api/users')
-      .expect(200)
-      .expect('Content-Type', /application\/json/);
-  });
-
   test('User can be viewed', async () => {
-    const user = await User.findOne({ username: 'marko' });
+    const user = await User.findOne({ username: 'testi' });
 
     await api
       .get(`/api/users/${user._id}`)
@@ -41,12 +34,9 @@ describe('GET -methods', () => {
 });
 
 describe('DELETE -methods', () => {
-  test('User can be deleted', async () => {
-    const user = await User.findOne({ username: 'marko' });
-
-    const result = await api.delete(`/api/users/${user._id}`);
-
-    expect(result.body.username).toContain('marko');
+  test('User can not be deleted without proper auth', async () => {
+    const result = await api.delete(`/api/users/`);
+    expect(result.body.error).toContain('token missing or invalid');
   });
 });
 

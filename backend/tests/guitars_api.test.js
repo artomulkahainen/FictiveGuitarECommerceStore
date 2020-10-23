@@ -23,22 +23,9 @@ describe('GET METHODS', () => {
 
     expect(guitars).toContain('Les Paul');
   });
-});
-
-describe('PUT -methods', () => {
-  test('Guitar price can be updated', async () => {
-    const guitar = await Guitar.findOne({ title: 'Telecaster' });
-
-    const guitarToChange = {
-      title: 'Telecaster',
-      price: (guitar.price + 200).toFixed(1),
-    };
-
-    await api
-      .put(`/api/guitars/${guitar._id}`)
-      .send(guitarToChange)
-      .expect(200)
-      .expect('Content-Type', /application\/json/);
+  test('Guitar price was found', async () => {
+    const res = await api.get('/api/guitars');
+    expect(res.body[0].price);
   });
 });
 
