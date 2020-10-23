@@ -17,8 +17,13 @@ const CreateAccount = () => {
   const createAccountSchema = yup.object({
     username: yup
       .string()
+      .matches(
+        /^(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/,
+        'White spaces or special characters are not allowed! One letter is also needed.'
+      )
       .required("Username can't be empty!")
-      .max(15, 'Username too long!'),
+      .max(15, 'Username too long!')
+      .min(3, 'Username too short!'),
     password: yup
       .string()
       .required('Password is required!')
