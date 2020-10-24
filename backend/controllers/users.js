@@ -23,6 +23,7 @@ usersRouter.post(
       .trim()
       .escape(),
     body('password', 'password min length is 5').isLength({ min: 5 }),
+    body('email').isEmail().normalizeEmail(),
   ],
   async (req, res) => {
     const errors = validationResult(req);

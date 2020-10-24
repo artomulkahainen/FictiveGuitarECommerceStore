@@ -27,6 +27,10 @@ ordersRouter.post(
     body('totalPrice').isFloat().withMessage('totalPrice must be float value'),
   ],
   async (req, res) => {
+    /*const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }*/
     const id = tokenValidator(req);
 
     if (!id) {
