@@ -50,7 +50,7 @@ describe('GET -METHODS', () => {
       .expect('Content-Type', /application\/json/);
   });
 
-  test('Getting orders is not possible without proper authentication', async () => {
+  test('Fetching orders is not possible without proper authentication', async () => {
     const res = await api
       .get('/api/orders')
       .set({
@@ -76,7 +76,7 @@ describe('POST -METHODS', () => {
       totalPrice: 6500.9,
     };
 
-    const res = await api
+    await api
       .post('/api/orders/')
       .send(newOrder)
       .set({

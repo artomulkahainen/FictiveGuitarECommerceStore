@@ -10,27 +10,72 @@ usersRouter.get('/:id', async (req, res) => {
   user ? res.json(user.toJSON()) : res.status(404).end();
 });
 
-// CREATE USER (protect the route and finish sanitizing)
+// CREATE USER
 usersRouter.post(
   '/',
   [
-    body('username')
+    body('username', 'username min length is 3')
       .isString()
       .withMessage('username must be in string format')
       .not()
       .isEmpty()
       .withMessage("username can't be empty")
       .trim()
-      .escape(),
-    body('password', 'password min length is 5').isLength({ min: 5 }),
+      .escape()
+      .isLength({ min: 3 }),
+    body(
+      'password',
+      'Password must contain only letters and numbers of 5 characters.'
+    )
+      .isLength({ min: 5 })
+      .matches(/[a-zA-Z0-9]/, 'Password must contain only letters and numbers'),
     body('email').isEmail().normalizeEmail(),
+    body('details.name')
+      .isString()
+      .withMessage('name must be in string format')
+      .not()
+      .isEmpty()
+      .withMessage("name can't be empty")
+      .trim()
+      .escape(),
+    body('details.address')
+      .isString()
+      .withMessage('address must be in string format')
+      .not()
+      .isEmpty()
+      .withMessage("address can't be empty")
+      .trim()
+      .escape(),
+    body('details.city')
+      .isString()
+      .withMessage('city must be in string format')
+      .not()
+      .isEmpty()
+      .withMessage("city can't be empty")
+      .trim()
+      .escape(),
+    body('details.zipCode')
+      .isString()
+      .withMessage('zipcode must be in string format')
+      .not()
+      .isEmpty()
+      .withMessage("zipcode can't be empty")
+      .trim()
+      .escape(),
+    body('details.phoneNumber')
+      .isString()
+      .withMessage('phoneNumber must be in string format')
+      .not()
+      .isEmpty()
+      .withMessage("phoneNumber can't be empty")
+      .trim()
+      .escape(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ error: errors.array() });
     }
-
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(req.body.password, saltRounds);
 
@@ -83,7 +128,7 @@ usersRouter.put('/', async (req, res, next) => {
     { new: true }
   )
     .then((updatedUser) => res.json(updatedUser))
-    .catch((error) => /*next(error)*/ res.json({ error: error }));
+    .catch((error) => res.json({ error: error }));
 });
 
 // PUT -METHOD FOR CHANGING PASSWORD (sanitizing needed)

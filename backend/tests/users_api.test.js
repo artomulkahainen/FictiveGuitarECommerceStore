@@ -67,8 +67,27 @@ describe('POST -methods', () => {
       .set({ Accept: 'application/json', 'Content-Type': 'application/json' })
       .send(newUser)
       .expect(400);
+  });
 
-    expect(res.body.errors[0].msg).toContain('Invalid value');
+  test("User with wrong name can't be created", async () => {
+    const newUser = {
+      username: 'testiAccount',
+      password: 'testi123',
+      email: 'markoboitsu2@gmail.com',
+      details: {
+        name: '',
+        address: 'Kyöstinpolku 5',
+        zipCode: '02600',
+        city: 'Hirvensalmi',
+        phoneNumber: '0455412234',
+      },
+    };
+
+    await api
+      .post('/api/users')
+      .set({ Accept: 'application/json', 'Content-Type': 'application/json' })
+      .send(newUser)
+      .expect(400);
   });
 
   test('User can be created', async () => {
@@ -77,7 +96,7 @@ describe('POST -methods', () => {
       password: 'testi123',
       email: 'markoboitsu2@gmail.com',
       details: {
-        name: 'Marko Hirvimies',
+        name: 'Marko Boi Bottuvoi',
         address: 'Kyöstinpolku 5',
         zipCode: '02600',
         city: 'Hirvensalmi',
