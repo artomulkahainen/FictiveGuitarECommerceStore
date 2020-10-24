@@ -8,6 +8,9 @@ const User = require('../models/user');
 
 let token = null;
 
+// ****************** BEFORE EACH TESTS *************** //
+// **************************************************** //
+
 beforeEach(async () => {
   await User.deleteOne({ username: 'testi' });
   const saltRounds = 10;
@@ -37,6 +40,9 @@ beforeEach(async () => {
   token = `bearer ${loginUser.body.token}`;
 });
 
+// ******************** GET METHODS ******************* //
+// **************************************************** //
+
 describe('GET -METHODS', () => {
   test('Orders returns as json', async () => {
     await api
@@ -64,6 +70,9 @@ describe('GET -METHODS', () => {
     expect(res.body.error).toContain('token missing or invalid');
   });
 });
+
+// ******************* POST METHODS ******************* //
+// **************************************************** //
 
 describe('POST -METHODS', () => {
   test('Ordering is possible', async () => {

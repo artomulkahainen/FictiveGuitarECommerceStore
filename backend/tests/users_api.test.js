@@ -7,6 +7,9 @@ const User = require('../models/user');
 
 let token = null;
 
+// ****************** BEFORE EACH TESTS *************** //
+// **************************************************** //
+
 beforeEach(async () => {
   await User.deleteOne({ username: 'testi' });
   await User.deleteOne({ username: 'testiAccount' });
@@ -36,6 +39,9 @@ beforeEach(async () => {
   token = `bearer ${loginUser.body.token}`;
 });
 
+// ******************** GET METHODS ******************* //
+// **************************************************** //
+
 describe('GET -methods', () => {
   test('User can be viewed', async () => {
     const user = await User.findOne({ username: 'testi' });
@@ -46,6 +52,9 @@ describe('GET -methods', () => {
       .expect('Content-Type', /application\/json/);
   });
 });
+
+// ******************* POST METHODS ******************* //
+// **************************************************** //
 
 describe('POST -methods', () => {
   test('User without proper email is not possible to create', async () => {
@@ -111,6 +120,9 @@ describe('POST -methods', () => {
       .expect(200);
   });
 });
+
+// ****************** DELETE METHODS ****************** //
+// **************************************************** //
 
 describe('DELETE -methods', () => {
   test('User can not be deleted without proper auth', async () => {
