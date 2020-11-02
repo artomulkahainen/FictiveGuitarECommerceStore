@@ -67,7 +67,7 @@ describe('GET -METHODS', () => {
       .expect(401)
       .expect('Content-Type', /application\/json/);
 
-    expect(res.body.error).toContain('token missing or invalid');
+    expect(res.body.error).toContain('invalid token');
   });
 });
 
@@ -118,7 +118,7 @@ describe('POST -METHODS', () => {
       .expect(401)
       .expect('Content-Type', /application\/json/);
 
-    expect(res.body.error).toContain('authorization failed');
+    expect(res.body.error).toContain('invalid token');
   });
 });
 

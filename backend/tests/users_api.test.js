@@ -2,6 +2,7 @@ const supertest = require('supertest');
 const mongoose = require('mongoose');
 const app = require('../app');
 const api = supertest(app);
+const bcrypt = require('bcrypt');
 
 const User = require('../models/user');
 
@@ -14,9 +15,11 @@ beforeEach(async () => {
   await User.deleteOne({ username: 'testi' });
   await User.deleteOne({ username: 'testiAccount' });
 
+  const saltRounds = 10;
+  const passwordHash = await bcrypt.hash('testi123', saltRounds);
   const user = new User({
     username: 'testi',
-    passwordHash: 'testi',
+    passwordHash,
     email: 'markoboi@gmail.com',
     details: {
       name: 'Marko Hirvimies',
@@ -43,11 +46,21 @@ beforeEach(async () => {
 // **************************************************** //
 
 describe('GET -methods', () => {
-  test('User can be viewed', async () => {
+  test('Logged users can view their details', async () => {
     const user = await User.findOne({ username: 'testi' });
+    console.log('console logign user');
+    console.log(user);
+
+    console.log('console logging token');
+    console.log(token);
 
     await api
       .get(`/api/users/${user._id}`)
+      .set({
+        Authorization: token,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      })
       .expect(200)
       .expect('Content-Type', /application\/json/);
   });
@@ -71,7 +84,7 @@ describe('POST -methods', () => {
       },
     };
 
-    const res = await api
+    await api
       .post('/api/users')
       .set({ Accept: 'application/json', 'Content-Type': 'application/json' })
       .send(newUser)
@@ -131,7 +144,7 @@ describe('DELETE -methods', () => {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     });
-    expect(result.body.error).toContain('token missing or invalid');
+    expect(result.body.error).toContain('invalid token');
   });
 });
 

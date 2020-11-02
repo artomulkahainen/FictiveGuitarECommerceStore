@@ -5,11 +5,11 @@ const Guitar = require('../models/guitar');
 const tokenValidator = require('../utils/tokenValidator');
 
 // GET USER'S OWN ORDERS
-ordersRouter.get('/', async (req, res) => {
+ordersRouter.get('/', async (req, res, next) => {
   const id = tokenValidator(req);
 
   if (!id) {
-    return res.status(401).json({ error: 'token missing or invalid' });
+    return next({ name: 'JsonWebTokenError' });
   }
 
   const orders = await Order.find({ user: { $in: id } });
@@ -19,11 +19,11 @@ ordersRouter.get('/', async (req, res) => {
 });
 
 // POST A NEW ORDER
-ordersRouter.post('/', async (req, res) => {
+ordersRouter.post('/', async (req, res, next) => {
   const id = tokenValidator(req);
 
   if (!id) {
-    return res.status(401).json({ error: 'authorization failed' });
+    return next({ name: 'JsonWebTokenError' });
   }
 
   const user = await User.findById(id);
