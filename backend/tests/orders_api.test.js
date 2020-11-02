@@ -8,7 +8,7 @@ const User = require('../models/user');
 
 let token = null;
 
-// ****************** BEFORE EACH TESTS *************** //
+// ****************** BEFORE EACH TEST *************** //
 // **************************************************** //
 
 beforeEach(async () => {
