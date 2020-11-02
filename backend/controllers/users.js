@@ -18,7 +18,7 @@ usersRouter.get('/:id', async (req, res, next) => {
 });
 
 // CREATE USER
-usersRouter.post('/', validationParams.slice(2), async (req, res) => {
+usersRouter.post('/', validationParams.slice(1), async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ error: errors.array() });
@@ -57,7 +57,7 @@ usersRouter.delete('/', async (req, res, next) => {
 });
 
 // PUT -METHOD FOR CHANGING ACCOUNT DETAILS
-usersRouter.put('/', validationParams.slice(4), async (req, res, next) => {
+usersRouter.put('/', validationParams.slice(3), async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ error: errors.array() });
@@ -86,7 +86,7 @@ usersRouter.put('/', validationParams.slice(4), async (req, res, next) => {
 // PUT -METHOD FOR CHANGING PASSWORD
 usersRouter.put(
   '/password',
-  validationParams.slice(0, 2),
+  validationParams.slice(0, 1),
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

@@ -2,12 +2,6 @@ const { body } = require('express-validator');
 
 const validationParams = [
   body(
-    'oldPassword',
-    'Password must contain only letters and numbers of 5 characters.'
-  )
-    .isLength({ min: 5 })
-    .matches(/[a-zA-Z0-9]/, 'Password must contain only letters and numbers'),
-  body(
     'newPassword',
     'Password must contain only letters and numbers of 5 characters.'
   )

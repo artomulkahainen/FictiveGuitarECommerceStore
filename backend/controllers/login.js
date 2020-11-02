@@ -5,7 +5,7 @@ const User = require('../models/user');
 const validationParams = require('../utils/validationParams');
 const { validationResult } = require('express-validator');
 
-loginRouter.post('/', validationParams.slice(2, 4), async (req, res, next) => {
+loginRouter.post('/', validationParams.slice(1, 3), async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ error: errors.array() });
