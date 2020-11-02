@@ -13,10 +13,13 @@ const getToken = () => {
 
 const getUserDetails = async () => {
   if (token) {
+    const options = {
+      headers: { Authorization: token },
+    };
     try {
       const loggedUser = window.localStorage.getItem('loggedUser');
       const currentUser = JSON.parse(loggedUser);
-      const res = await axios.get(baseUrl + `/${currentUser.id}`);
+      const res = await axios.get(baseUrl + `/${currentUser.id}`, options);
       return res.data;
     } catch (error) {
       console.log(error);
