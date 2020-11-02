@@ -56,7 +56,7 @@ usersRouter.delete('/', async (req, res, next) => {
     .catch((error) => next(error));
 });
 
-// PUT -METHOD FOR CHANGING ACCOUNT DETAILS (sanitizing needed)
+// PUT -METHOD FOR CHANGING ACCOUNT DETAILS
 usersRouter.put('/', validationParams.slice(4), async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
