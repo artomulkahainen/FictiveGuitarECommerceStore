@@ -117,7 +117,7 @@ usersRouter.put(
         .then((updatedUser) => res.json(updatedUser))
         .catch((e) => next(e));
     } else {
-      next({ name: 'JsonWebTokenError' });
+      res.status(401).json({ error: 'old password was invalid' });
     }
   }
 );
