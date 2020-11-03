@@ -8,6 +8,7 @@ import userService from './services/userService';
 import { initUserDetails } from './store/actions/userDetailsActions';
 import { initOrders } from './store/actions/userOrdersActions';
 import Alert from './components/Alerts/Alerts';
+import Container from 'react-bootstrap/Container';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <div className='container'>
+    <Container>
       <NavBar />
       {!alertMessage[0] ? (
         <br />
@@ -42,7 +43,7 @@ const App = () => {
         />
       )}
       <Routes />
-    </div>
+    </Container>
   );
 };
 

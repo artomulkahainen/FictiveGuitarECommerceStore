@@ -1,7 +1,7 @@
 import React from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Navbar } from 'react-bootstrap';
 import img from '../../assets/img/acousticguitar.jpg';
-import NavLink from './NavLink/NavLink';
+import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import userService from '../../services/userService';
 import { clearUserDetails } from '../../store/actions/userDetailsActions';
@@ -10,6 +10,7 @@ import { setAlert, removeAlert } from '../../store/actions/alertActions';
 import { logoutUser } from '../../store/actions/userLoggedActions';
 import { useHistory } from 'react-router-dom';
 import uniqid from 'uniqid';
+import Button from '../Button/Button';
 
 const NavBar = () => {
   const user = useSelector(({ userLogged }) => userLogged);
@@ -46,30 +47,30 @@ const NavBar = () => {
   };
 
   const notUserNavItems = [
-    <Nav.Item key='1'>
-      <NavLink to='Guitars' />
-    </Nav.Item>,
-    <Nav.Item key='2'>
-      <NavLink to='Cart' />
-    </Nav.Item>,
-    <Nav.Item key='3'>
-      <NavLink to='Login' />
-    </Nav.Item>,
+    <NavLink key='1' to='Guitars'>
+      <Button variant='light' text='Guitars' />
+    </NavLink>,
+    <NavLink key='2' to='Cart'>
+      <Button variant='light' text='Cart' />
+    </NavLink>,
+    <NavLink key='3' to='Login'>
+      <Button variant='light' text='Login' />
+    </NavLink>,
   ];
 
   const userNavItems = [
-    <Nav.Item key='1'>
-      <NavLink to='Guitars' />
-    </Nav.Item>,
-    <Nav.Item key='2'>
-      <NavLink to='Cart' />
-    </Nav.Item>,
-    <Nav.Item key='3'>
-      <NavLink to='Account' />
-    </Nav.Item>,
-    <Nav.Item key='4' onClick={() => logout()}>
-      <NavLink />
-    </Nav.Item>,
+    <NavLink key='1' to='Guitars'>
+      <Button variant='light' text='Guitars' />
+    </NavLink>,
+    <NavLink key='2' to='Cart'>
+      <Button variant='light' text='Cart' />
+    </NavLink>,
+    <NavLink key='3' to='Account'>
+      <Button variant='light' text='Account' />
+    </NavLink>,
+    <NavLink key='4' to='#'>
+      <Button variant='light' text='Logout' click={() => logout()} />
+    </NavLink>,
   ];
 
   return (

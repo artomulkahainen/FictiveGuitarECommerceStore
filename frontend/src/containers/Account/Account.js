@@ -57,10 +57,7 @@ const Account = () => {
           buttonText1='Change password'
           otherComponents={[detailsRef, ordersRef]}
           ref={passwordRef}>
-          <ChangePassword
-            /*handler={changePasswordHandler}*/
-            componentToggle={passwordRef}
-          />
+          <ChangePassword componentToggle={passwordRef} />
         </Togglable>
       </div>
     </div>
