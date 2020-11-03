@@ -1,5 +1,5 @@
 import axios from 'axios';
-const baseUrl = 'http://localhost:3001/api/guitars';
+const baseUrl = '/api/guitars';
 
 const getAll = async () => {
   const res = await axios.get(baseUrl);

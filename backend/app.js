@@ -38,6 +38,11 @@ app.use('/api/guitars', guitarsRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/orders', ordersRouter);
 app.use('/api/login', loginRouter);
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('build'));
+}
+
 app.use(middleware.errorHandler);
 app.use(middleware.unknownEndpoint);
 

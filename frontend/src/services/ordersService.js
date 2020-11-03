@@ -1,6 +1,6 @@
 import axios from 'axios';
 import userService from './userService';
-const baseUrl = 'http://localhost:3001/api/orders';
+const baseUrl = '/api/orders';
 
 const getUserOrders = () => {
   const token = userService.getToken();
