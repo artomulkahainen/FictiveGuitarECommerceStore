@@ -7,7 +7,7 @@
 
 * [About the Project](#about-the-project)
   * [Built With](#built-with)
-* [Link to Heroku](#heroku-link)
+* [Link to Heroku](#link-to-heroku)
 
 
 
