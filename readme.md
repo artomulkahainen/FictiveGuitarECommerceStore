@@ -7,6 +7,7 @@
 
 * [About the Project](#about-the-project)
   * [Built With](#built-with)
+  * [How To Use](#how-to-use)
   * [How To Setup Own Environment](#how-to-setup-own-environment)
 * [Link to Heroku](#link-to-heroku)
 
@@ -22,6 +23,17 @@ I built this fictive guitar e-commerce store just for training purposes.
 I used these frameworks:
   * React
   * Express
+
+### How To Use
+
+App is used by picking the guitars you want to buy from Guitars menu. You can see all your pickings from cart menu.
+When you are ready for the purchase, you need to create user account. User account creation won't clear your cart so no worries.
+User account can be created from Login menu.
+
+After successful account creation and login, cart menu's ORDER NOW button is active and you are ready to go.
+Now you are able to confirm your purchase if you want so.
+
+Own previous orders, user details, password can be viewed and changed from User's own menu, which is activated when logged in.
 
 ### How To Setup Own Environment
 
