@@ -7,7 +7,7 @@
 
 * [About the Project](#about-the-project)
   * [Built With](#built-with)
-  * [How To Use](#how-to-use)
+  * [How To Setup Own Environment](#how-to-setup-own-environment)
 * [Link to Heroku](#link-to-heroku)
 
 
@@ -23,7 +23,7 @@ I used these frameworks:
   * React
   * Express
 
-### How To Use
+### How To Setup Own Environment
 
 1. Clone the repo
 2. Create .env file to backend folder and write this sentence in there:
